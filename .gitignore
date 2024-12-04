@@ -25,6 +25,7 @@ bin/
 out/
 .DS_Store
 */.DS_Store
+*.json
 !**/src/main/**/out/
 !**/src/test/**/out/
 
