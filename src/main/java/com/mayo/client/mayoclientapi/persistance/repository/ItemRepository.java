@@ -16,55 +16,7 @@ import java.util.concurrent.ExecutionException;
 @Repository
 public class ItemRepository {
 
-    public List<Item> getSaleItemRandom() {
-        List<Item> items = new ArrayList<>();
-
-        Firestore db = FirestoreClient.getFirestore();
-        CollectionReference itemsRef = db.collection("items");
-        Query itemOnSale = itemsRef.whereEqualTo("item_on_sale", true);
-
-        ApiFuture<QuerySnapshot> querySnapshotApiFuture = itemOnSale.get();
-        QuerySnapshot querySnapshot = null;
-
-        try {
-            querySnapshot = querySnapshotApiFuture.get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new ApplicationException(ErrorStatus.toErrorStatus("할인 중인 아이템을 가져오는 도중 에러가 발생하였습니다.", 400, LocalDateTime.now()));
-        }
-
-        for(QueryDocumentSnapshot document : querySnapshot.getDocuments()) {
-            Item item = fromDocument(document);
-            items.add(item);
-        }
-
-        return getRandomItems(items, 3);
-    }
-
-    public List<Item> getSaleItem() {
-        List<Item> items = new ArrayList<>();
-
-        Firestore db = FirestoreClient.getFirestore();
-        CollectionReference itemsRef = db.collection("items");
-        Query itemOnSale = itemsRef.whereEqualTo("item_on_sale", true);
-
-        ApiFuture<QuerySnapshot> querySnapshotApiFuture = itemOnSale.get();
-        QuerySnapshot querySnapshot = null;
-
-        try {
-            querySnapshot = querySnapshotApiFuture.get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new ApplicationException(ErrorStatus.toErrorStatus("할인 중인 아이템을 가져오는 도중 에러가 발생하였습니다.", 400, LocalDateTime.now()));
-        }
-
-        for(QueryDocumentSnapshot document : querySnapshot.getDocuments()) {
-            Item item = fromDocument(document);
-            items.add(item);
-        }
-
-        return getRandomItems(items, items.size());
-    }
-
-    public List<Item> getItemsByStoreId(String storeId) {
+    public List<Item> findItemsByStoreId(String storeId) {
 
         List<Item> items = new ArrayList<>();
 
@@ -131,7 +83,7 @@ public class ItemRepository {
         }
     }
 
-    public Optional<Item> getItemById(String itemId) {
+    public Optional<Item> findItemById(String itemId) {
         Firestore db = FirestoreClient.getFirestore();
 
         try {
