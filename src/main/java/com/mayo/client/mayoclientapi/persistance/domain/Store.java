@@ -60,8 +60,14 @@ public class Store {
     @PropertyName("open_day_of_week")
     private List<Integer> openDayOfWeek;
 
+    @PropertyName("store_category")
+    private Long storeCategory;
+
+    @PropertyName("store_sellingType")
+    private Long storeSellingType;
+
     @Builder
-    public Store(String id, String storeName, Boolean openState, String address, String storeImage, String openTime, String closeTime, String saleStart, String saleEnd, String storeDescription, String storeNumber, String storeMapUrl, String originInfo, String additionalComment, List<Integer> openDayOfWeek) {
+    public Store(String id, String storeName, Boolean openState, String address, String storeImage, String openTime, String closeTime, String saleStart, String saleEnd, String storeDescription, String storeNumber, String storeMapUrl, String originInfo, String additionalComment, List<Integer> openDayOfWeek, Long storeCategory, Long storeSellingType) {
         this.id = id;
         this.storeName = storeName;
         this.openState = openState;
@@ -77,5 +83,7 @@ public class Store {
         this.originInfo = originInfo;
         this.additionalComment = additionalComment;
         this.openDayOfWeek = openDayOfWeek;
+        this.storeCategory = storeCategory;
+        this.storeSellingType = storeSellingType;
     }
 }
