@@ -9,6 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @NoArgsConstructor
 @Getter
 @ToString
@@ -52,5 +55,18 @@ public class Cart {
         this.userRef = userRef;
         this.item = item;
         this.storeRef = storeRef;
+    }
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("cartActive", getCartActive());
+        result.put("itemCount", getItemCount());
+        result.put("created_at", getCreatedAt());
+        result.put("store_ref", getStoreRef());
+        result.put("subtotal", getSubtotal());
+        result.put("userRef", getUserRef());
+        result.put("item", getItem());
+
+        return result;
     }
 }

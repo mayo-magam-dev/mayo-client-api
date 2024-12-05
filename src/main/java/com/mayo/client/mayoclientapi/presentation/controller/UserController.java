@@ -32,7 +32,7 @@ public class UserController {
     @Authenticated
     @GetMapping("/favorite-stores")
     public ResponseEntity<List<ReadStoreResponse>> favoriteStores(HttpServletRequest req) {
-        return ResponseEntity.ok(userService.getUserNoticeStores(req.getAttribute("uid").toString()));
+        return ResponseEntity.ok(userService.getUserFavoriteStores(req.getAttribute("uid").toString()));
     }
 
     @Authenticated

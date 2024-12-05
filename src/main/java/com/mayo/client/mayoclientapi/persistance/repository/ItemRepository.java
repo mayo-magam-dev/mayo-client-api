@@ -6,6 +6,7 @@ import com.google.firebase.cloud.FirestoreClient;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistance.domain.Item;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.security.SecureRandom;
@@ -14,7 +15,41 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Repository
+@Slf4j
 public class ItemRepository {
+
+    private static final String COLLECTION_NAME = "items";
+
+    public Optional<DocumentReference> findDocRefById(String itemId) {
+
+        Firestore db = FirestoreClient.getFirestore();
+
+        ApiFuture<DocumentSnapshot> future = db.collection(COLLECTION_NAME).document(itemId).get();
+
+        try {
+            return Optional.of(future.get().getReference());
+        } catch (InterruptedException | ExecutionException e) {
+            log.error("firebase 통신 중 오류가 발생했습니다.");
+        }
+
+        return Optional.empty();
+    }
+
+    public Optional<Item> findItemByDocRef(DocumentReference itemRef) {
+
+        ApiFuture<DocumentSnapshot> future = itemRef.get();
+        try {
+            DocumentSnapshot documentSnapshot = future.get();
+            if(documentSnapshot.exists()) {
+                return Optional.ofNullable(fromDocument(documentSnapshot));
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Optional.empty();
+
+    }
 
     public List<Item> findItemsByStoreId(String storeId) {
 

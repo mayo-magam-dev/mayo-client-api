@@ -9,7 +9,6 @@ import com.mayo.client.mayoclientapi.persistance.domain.Store;
 import org.springframework.stereotype.Repository;
 
 import java.security.SecureRandom;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -18,9 +17,10 @@ import java.util.concurrent.ExecutionException;
 public class StoreRepository {
 
     private static final String COLLECTION_NAME = "stores";
-    private final Firestore db = FirestoreClient.getFirestore();
 
     public List<Store> findOpenStores() {
+
+        Firestore db = FirestoreClient.getFirestore();
 
         List<Store> list = new ArrayList<>();
         ApiFuture<QuerySnapshot> future = db.collection(COLLECTION_NAME)
@@ -43,6 +43,8 @@ public class StoreRepository {
 
     public Optional<DocumentReference> findDocRefById(String storeId) {
 
+        Firestore db = FirestoreClient.getFirestore();
+
         ApiFuture<DocumentSnapshot> future = db.collection(COLLECTION_NAME).document(storeId).get();
 
         try {
@@ -54,6 +56,8 @@ public class StoreRepository {
     }
 
     public List<Store> findRandomOpenStores() {
+
+        Firestore db = FirestoreClient.getFirestore();
 
         List<Store> list = new ArrayList<>();
         ApiFuture<QuerySnapshot> future = db.collection(COLLECTION_NAME)

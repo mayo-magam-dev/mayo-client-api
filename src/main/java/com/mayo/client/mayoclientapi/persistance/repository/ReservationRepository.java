@@ -15,18 +15,16 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Repository
-@RequiredArgsConstructor
 @Slf4j
 public class ReservationRepository {
 
     private static final String USER_COLLECTION_NAME = "users";
     private static final String COLLECTION_NAME = "reservation";
 
-    private final Firestore db = FirestoreClient.getFirestore();
-
     public List<Reservation> getReservationsByUserId(String userId) {
 
         List<Reservation> reservations = new ArrayList<>();
+        Firestore db = FirestoreClient.getFirestore();
 
         DocumentReference userDocumentId = db.collection(USER_COLLECTION_NAME).document(userId);
 
@@ -56,6 +54,8 @@ public class ReservationRepository {
     //예약 도큐먼트 Id를 입력받아 reservation 객체를 가져옵니다.
     public Optional<Reservation> findByReservationId(String reservationId) {
 
+        Firestore db = FirestoreClient.getFirestore();
+
         try {
             DocumentReference docRef = db.collection("reservation").document(reservationId);
             ApiFuture<DocumentSnapshot> future = docRef.get();
@@ -71,6 +71,8 @@ public class ReservationRepository {
     }
 
     public Optional<Reservation> findRecentlyByUserId(String userId) {
+
+        Firestore db = FirestoreClient.getFirestore();
 
         DocumentReference userDocumentId = db.collection(USER_COLLECTION_NAME).document(userId);
 

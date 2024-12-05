@@ -9,6 +9,7 @@ import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistance.domain.FCMToken;
 import com.mayo.client.mayoclientapi.persistance.domain.User;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +22,7 @@ import java.util.concurrent.ExecutionException;
 
 @Repository
 @Slf4j
+@RequiredArgsConstructor
 public class UserRepository {
 
     private static final String COLLECTION_NAME_FCM_TOKENS = "fcm_tokens";
@@ -28,37 +30,62 @@ public class UserRepository {
     private static final String FIELD_FCM_TOKEN = "fcm_token";
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final Firestore db = FirestoreClient.getFirestore();
 
     public void save(User user) {
-        db.collection(COLLECTION_NAME_USERS).document(user.getUid()).set(user.toMap(user));
+        Firestore db = FirestoreClient.getFirestore();
+        db.collection(COLLECTION_NAME_USERS).document(user.getUid()).set(user.toMap());
     }
 
     public void removeNoticeStore(User user, DocumentReference storeRef) {
+        Firestore db = FirestoreClient.getFirestore();
+
         db.collection(COLLECTION_NAME_USERS)
                 .document(user.getUid())
                 .update("noticeStores", FieldValue.arrayRemove(storeRef));
     }
 
     public void addNoticeStore(User user, DocumentReference storeRef) {
+        Firestore db = FirestoreClient.getFirestore();
+
         db.collection(COLLECTION_NAME_USERS)
                 .document(user.getUid())
                 .update("noticeStores", FieldValue.arrayUnion(storeRef));
     }
 
     public void removeFavoriteStore(User user, DocumentReference storeRef) {
+        Firestore db = FirestoreClient.getFirestore();
+
         db.collection(COLLECTION_NAME_USERS)
                 .document(user.getUid())
                 .update("favorite_stores", FieldValue.arrayRemove(storeRef));
     }
 
     public void addFavoriteStore(User user, DocumentReference storeRef) {
+        Firestore db = FirestoreClient.getFirestore();
+
         db.collection(COLLECTION_NAME_USERS)
                 .document(user.getUid())
                 .update("favorite_stores", FieldValue.arrayUnion(storeRef));
     }
 
+    public Optional<DocumentReference> findDocByUserId(String uid) {
+
+        Firestore db = FirestoreClient.getFirestore();
+
+        ApiFuture<DocumentSnapshot> future = db.collection(COLLECTION_NAME_USERS).document(uid).get();
+
+        try {
+            return Optional.of(future.get().getReference());
+        } catch (InterruptedException | ExecutionException e) {
+            log.error("firebase 통신 중 오류 발생");
+        }
+
+        return Optional.empty();
+    }
+
     public Optional<User> findByUserId(String userId) {
+
+        Firestore db = FirestoreClient.getFirestore();
 
         DocumentReference documentReference = db.collection("users").document(userId);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
@@ -75,8 +102,10 @@ public class UserRepository {
 
     public List<String> getFCMTokenByUserId(String userId) {
 
-    List<String> fcmTokens = new ArrayList<>();
-    DocumentReference userRef = db.collection("users").document(userId);
+        Firestore db = FirestoreClient.getFirestore();
+
+        List<String> fcmTokens = new ArrayList<>();
+        DocumentReference userRef = db.collection("users").document(userId);
 
         try {
             DocumentSnapshot userDocument = userRef.get().get();
@@ -101,6 +130,8 @@ public class UserRepository {
     }
 
     public List<String> getFCMTokenByStoresId(String storesId) {
+
+        Firestore db = FirestoreClient.getFirestore();
 
         List<String> fcmTokens = new ArrayList<>();
 
@@ -128,6 +159,8 @@ public class UserRepository {
     }
 
     public void createFCMTokenById(String userId, String token){
+
+        Firestore db = FirestoreClient.getFirestore();
 
         DocumentReference userRef = db.collection("users").document(userId);
 
