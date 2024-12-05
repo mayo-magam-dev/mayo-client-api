@@ -1,12 +1,12 @@
 package com.mayo.client.mayoclientapi.common.config;
 
-import com.example.mayoweb.commons.exception.ApplicationException;
-import com.example.mayoweb.commons.exception.payload.ErrorStatus;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
+import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
+import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
