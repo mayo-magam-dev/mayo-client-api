@@ -1,5 +1,6 @@
 package com.mayo.client.mayoclientapi.persistance.domain;
 
+import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.annotation.DocumentId;
 import com.google.cloud.firestore.annotation.PropertyName;
@@ -9,7 +10,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @NoArgsConstructor
 @Getter
@@ -31,7 +34,7 @@ public class User {
     private String photoUrl;
 
     @PropertyName("created_time")
-    private Date createdTime;
+    private Timestamp createdTime;
 
     @PropertyName("phone_number")
     private String phoneNumber;
@@ -58,7 +61,7 @@ public class User {
     private String name;
 
     @PropertyName("birthday")
-    private Date birthday;
+    private Timestamp birthday;
 
     @PropertyName("store_ref")
     private DocumentReference storeRef;
@@ -70,7 +73,7 @@ public class User {
     private List<DocumentReference> noticeStores;
 
     @Builder
-    public User(String userid, String uid, String email, String displayName, String photoUrl, Date createdTime, String phoneNumber, Boolean isManager, Boolean agreeTerms1, Boolean agreeTerms2, Boolean agreeMarketing, String currentLocation, String gender, String name, Date birthday, DocumentReference storeRef, List<DocumentReference> favoriteStores, List<DocumentReference> noticeStores) {
+    public User(String userid, String uid, String email, String displayName, String photoUrl, Timestamp createdTime, String phoneNumber, Boolean isManager, Boolean agreeTerms1, Boolean agreeTerms2, Boolean agreeMarketing, String currentLocation, String gender, String name, Timestamp birthday, DocumentReference storeRef, List<DocumentReference> favoriteStores, List<DocumentReference> noticeStores) {
         this.userid = userid;
         this.uid = uid;
         this.email = email;
@@ -89,5 +92,28 @@ public class User {
         this.storeRef = storeRef;
         this.favoriteStores = favoriteStores;
         this.noticeStores = noticeStores;
+    }
+
+    public Map<String, Object> toMap(User user) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("uid", user.getUid());
+        result.put("email", user.getEmail());
+        result.put("display_name", user.getDisplayName());
+        result.put("photo_url", user.getPhotoUrl());
+        result.put("created_time", user.getCreatedTime());
+        result.put("phone_number", user.getPhoneNumber());
+        result.put("is_manager", user.getIsManager());
+        result.put("agree_terms1", user.getAgreeTerms1());
+        result.put("agree_terms2", user.getAgreeTerms2());
+        result.put("agree_marketing", user.getAgreeMarketing());
+        result.put("currentLocation", user.getCurrentLocation());
+        result.put("gender", user.getGender());
+        result.put("name", user.getName());
+        result.put("birthday", user.getBirthday());
+        result.put("store_ref", user.getStoreRef());
+        result.put("favorite_stores", user.getFavoriteStores());
+        result.put("notice_stores", user.getNoticeStores());
+
+        return result;
     }
 }

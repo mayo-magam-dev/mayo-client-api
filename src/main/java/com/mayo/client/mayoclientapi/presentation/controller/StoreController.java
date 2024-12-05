@@ -1,13 +1,7 @@
 package com.mayo.client.mayoclientapi.presentation.controller;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseToken;
 import com.mayo.client.mayoclientapi.application.service.StoreService;
 import com.mayo.client.mayoclientapi.common.annotation.Authenticated;
-import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
-import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
-import com.mayo.client.mayoclientapi.common.utils.JwtTokenUtils;
 import com.mayo.client.mayoclientapi.presentation.dto.response.ReadRecentlyStoreResponse;
 import com.mayo.client.mayoclientapi.presentation.dto.response.ReadSimpleStoreResponse;
 import com.mayo.client.mayoclientapi.presentation.dto.response.ReadStoreResponse;
@@ -17,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
