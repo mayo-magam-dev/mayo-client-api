@@ -41,6 +41,26 @@ public class ItemRepository {
         return items;
     }
 
+    public Double findMaxPercentItemByStoreId(String storeId) {
+
+        Firestore firestore = FirestoreClient.getFirestore();
+
+        DocumentReference storeDocumentId = firestore.collection("stores").document(storeId);
+        CollectionReference itemsRef = firestore.collection("items");
+        Query query = itemsRef.whereEqualTo("store_ref", storeDocumentId).orderBy("sale_percent", Query.Direction.DESCENDING);
+        ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
+        QuerySnapshot querySnapshot = null;
+
+        try {
+            querySnapshot = querySnapshotApiFuture.get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new ApplicationException(ErrorStatus.toErrorStatus("스토어로 아이템을 가져오는 중 에러가 발생하였습니다.", 400, LocalDateTime.now()));
+        }
+
+        return fromDocument(querySnapshot.getDocuments().get(0)).getSalePercent();
+
+    }
+
     public void updateItemsStateOutOfStock(String storeId) {
 
         Firestore firestore = FirestoreClient.getFirestore();

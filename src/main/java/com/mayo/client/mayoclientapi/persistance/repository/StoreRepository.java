@@ -120,6 +120,24 @@ public class StoreRepository {
         return list;
     }
 
+    public Optional<Store> findByDocRef(DocumentReference docRef) {
+
+        ApiFuture<DocumentSnapshot> future = docRef.get();
+        DocumentSnapshot document = null;
+
+        try {
+            document = future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
+        if(document.exists()) {
+            return Optional.ofNullable(fromDocument(document));
+        }
+
+        return Optional.empty();
+    }
+
     private List<Store> getRandomStores(List<Store> stores, int n) {
         Random random = new SecureRandom();
         List<Store> randomStores = new ArrayList<>();
