@@ -6,7 +6,6 @@ import com.google.firebase.cloud.FirestoreClient;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistance.domain.Reservation;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -29,7 +28,9 @@ public class ReservationRepository {
         DocumentReference userDocumentId = db.collection(USER_COLLECTION_NAME).document(userId);
 
         CollectionReference reservationRef = db.collection(COLLECTION_NAME);
-        Query query = reservationRef.whereEqualTo("user_ref", userDocumentId);
+        Query query = reservationRef
+                .whereEqualTo("user_ref", userDocumentId)
+                .orderBy("created_at", Query.Direction.DESCENDING);
 
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
         QuerySnapshot querySnapshot = null;
@@ -40,9 +41,6 @@ public class ReservationRepository {
             throw new RuntimeException(e);
         }
 
-        Comparator<Reservation> createdAtComparator = Comparator
-                .comparing(entity -> entity.getCreatedAt().toSqlTimestamp(), Comparator.reverseOrder());
-
         for (QueryDocumentSnapshot reservationDocument : querySnapshot.getDocuments()) {
             Reservation Reservation = fromDocument(reservationDocument);
             reservations.add(Reservation);
@@ -51,7 +49,6 @@ public class ReservationRepository {
         return reservations;
     }
 
-    //예약 도큐먼트 Id를 입력받아 reservation 객체를 가져옵니다.
     public Optional<Reservation> findByReservationId(String reservationId) {
 
         Firestore db = FirestoreClient.getFirestore();

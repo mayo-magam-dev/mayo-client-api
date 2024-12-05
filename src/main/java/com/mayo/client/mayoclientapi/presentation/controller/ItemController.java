@@ -20,12 +20,12 @@ public class ItemController {
 
     private final ItemService itemService;
 
-    @GetMapping("/{storeId}")
+    @GetMapping("/store/{storeId}")
     public ResponseEntity<List<ReadItemResponse>> getItemByStoreId(@PathVariable String storeId) {
         return ResponseEntity.ok(itemService.getItemsByStoreId(storeId));
     }
 
-    @GetMapping("/{itemId}")
+    @GetMapping("/item/{itemId}")
     public ResponseEntity<ReadItemResponse> getItemById(@PathVariable String itemId) {
         return ResponseEntity.ok(itemService.getItemById(itemId));
     }

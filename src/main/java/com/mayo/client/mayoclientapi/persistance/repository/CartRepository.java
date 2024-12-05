@@ -6,6 +6,8 @@ import com.google.firebase.cloud.FirestoreClient;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistance.domain.Cart;
+import com.mayo.client.mayoclientapi.persistance.domain.Reservation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -15,6 +17,7 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 @Repository
+@Slf4j
 public class CartRepository {
 
     private final String COLLECTION_NAME_CARTS = "carts";
@@ -88,7 +91,32 @@ public class CartRepository {
         return Optional.empty();
     }
 
+    public void updateCartIsActiveFalse(String cartId) {
+        Firestore db = FirestoreClient.getFirestore();
+
+        try {
+            DocumentReference docRef = db.collection("carts").document(cartId).get().get().getReference();
+            docRef.update("cartActive", false);
+        } catch (InterruptedException | ExecutionException e) {
+            throw new ApplicationException(
+                    ErrorStatus.toErrorStatus("firebase 통신 중 오류가 발생하였습니다.", 500, LocalDateTime.now() )
+            );
+        }
+    }
+
+    public Optional<DocumentReference> findFirstCartsByReservation(Reservation reservation) {
+
+        List<DocumentReference> cartRefs = reservation.getCartRef();
+
+        if (!cartRefs.isEmpty()) {
+            return Optional.ofNullable(cartRefs.get(0));
+        }
+
+        return Optional.empty();
+    }
+
     private Cart fromDocument(DocumentSnapshot document) {
+
         return Cart.builder()
                 .cartId(document.getId())
                 .itemCount(document.get("itemCount", Integer.class))

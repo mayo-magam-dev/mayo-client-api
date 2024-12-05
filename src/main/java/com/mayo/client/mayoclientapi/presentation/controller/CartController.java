@@ -2,6 +2,8 @@ package com.mayo.client.mayoclientapi.presentation.controller;
 
 import com.mayo.client.mayoclientapi.application.service.CartService;
 import com.mayo.client.mayoclientapi.common.annotation.Authenticated;
+import com.mayo.client.mayoclientapi.persistance.domain.Cart;
+import com.mayo.client.mayoclientapi.persistance.repository.CartRepository;
 import com.mayo.client.mayoclientapi.presentation.dto.request.CreateCartRequest;
 import com.mayo.client.mayoclientapi.presentation.dto.response.ReadCartResponse;
 import jakarta.servlet.http.HttpServletRequest;

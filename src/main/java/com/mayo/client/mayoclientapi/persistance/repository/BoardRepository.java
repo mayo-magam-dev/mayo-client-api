@@ -35,7 +35,7 @@ public class BoardRepository {
         }
 
         for (QueryDocumentSnapshot boardDocument : querySnapshot.getDocuments()) {
-            Board Board = boardDocument.toObject(Board.class);
+            Board Board = fromDocument(boardDocument);
             boards.add(Board);
         }
 
@@ -60,7 +60,32 @@ public class BoardRepository {
         }
 
         for (QueryDocumentSnapshot boardDocument : querySnapshot.getDocuments()) {
-            Board Board = boardDocument.toObject(Board.class);
+            Board Board = fromDocument(boardDocument);
+            boards.add(Board);
+        }
+        return boards;
+    }
+
+    public List<Board> getEventBoard() {
+
+        List<Board> boards = new ArrayList<>();
+
+        Firestore firestore = FirestoreClient.getFirestore();
+        CollectionReference boardRef = firestore.collection("board");
+        Query query = boardRef
+                .whereEqualTo("category", BoardCategory.EVENT.ordinal())
+                .orderBy("write_time", Query.Direction.DESCENDING);
+        ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
+        QuerySnapshot querySnapshot = null;
+
+        try {
+            querySnapshot = querySnapshotApiFuture.get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new ApplicationException(ErrorStatus.toErrorStatus("이벤트를 가져오는 도중 에러가 발생하였습니다.", 400, LocalDateTime.now()));
+        }
+
+        for (QueryDocumentSnapshot boardDocument : querySnapshot.getDocuments()) {
+            Board Board = fromDocument(boardDocument);
             boards.add(Board);
         }
         return boards;
@@ -79,6 +104,17 @@ public class BoardRepository {
             throw new ApplicationException(ErrorStatus.toErrorStatus("해당 게시글을 가져오는데 오류가 발생하였습니다.", 400, LocalDateTime.now()));
         }
 
-        return Optional.ofNullable(document.toObject(Board.class));
+        return Optional.ofNullable(fromDocument(document));
+    }
+
+    private Board fromDocument(DocumentSnapshot document) {
+        return Board.builder()
+                .boardId(document.getId())
+                .title(document.getString("title"))
+                .content(document.getString("content"))
+                .image(document.getString("image"))
+                .writer(document.getString("writer"))
+                .writeTime(document.getTimestamp("write_time"))
+                .build();
     }
 }
