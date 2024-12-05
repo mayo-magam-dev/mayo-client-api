@@ -6,6 +6,7 @@ import com.google.firebase.cloud.FirestoreClient;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistance.domain.Item;
+import com.mayo.client.mayoclientapi.presentation.dto.response.ReadFirstItemResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -155,6 +156,41 @@ public class ItemRepository {
         }
 
         return Optional.empty();
+    }
+
+    public ReadFirstItemResponse findFirstItemNamesFromCart(DocumentReference cart){
+
+        DocumentSnapshot cartSnapshot = null;
+
+        try {
+            cartSnapshot = cart.get().get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new ApplicationException(ErrorStatus.toErrorStatus("cart객체에서 아이템을 가져오는데 실패했습니다.", 400, LocalDateTime.now()));
+        }
+
+        if(cartSnapshot.exists()) {
+            DocumentReference itemRef = (DocumentReference) cartSnapshot.get("item");
+
+            if(itemRef != null) {
+                DocumentSnapshot itemSnapshot = null;
+                try {
+                    itemSnapshot = itemRef.get().get();
+                } catch (InterruptedException | ExecutionException e) {
+                    throw new ApplicationException(ErrorStatus.toErrorStatus("cart로 아이템을 가져오는데 실패했습니다.", 400, LocalDateTime.now()));
+                }
+
+                if (itemSnapshot.exists()) {
+                    return ReadFirstItemResponse.builder()
+                            .itemName(itemSnapshot.getString("item_name"))
+                            .itemQuantity(cartSnapshot.get("itemCount", Integer.class))
+                            .build();
+                }
+            }
+        }
+        return ReadFirstItemResponse.builder()
+                .itemName(" ")
+                .itemQuantity(0)
+                .build();
     }
 
     private Item fromDocument(DocumentSnapshot document) {

@@ -17,71 +17,71 @@ public class Item {
 
     @DocumentId
     @JsonProperty("item_id")
-    public String itemId;
+    private String itemId;
 
     @PropertyName("item_name")
     @JsonProperty("item_name")
-    public String itemName;
+    private String itemName;
 
     @PropertyName("item_description")
     @JsonProperty("item_description")
-    public String itemDescription;
+    private String itemDescription;
 
     @PropertyName("original_price")
     @JsonProperty("original_price")
-    public Integer originalPrice;
+    private Integer originalPrice;
 
     @PropertyName("sale_percent")
     @JsonProperty("sale_percent")
-    public Double salePercent;
+    private Double salePercent;
 
     @PropertyName("item_created")
     @JsonProperty("item_created")
-    public Timestamp itemCreated;
+    private Timestamp itemCreated;
 
     @PropertyName("item_modified")
     @JsonProperty("item_modified")
-    public Timestamp itemModified;
+    private Timestamp itemModified;
 
     @PropertyName("item_quantity")
     @JsonProperty("item_quantity")
-    public Integer itemQuantity;
+    private Integer itemQuantity;
 
     @PropertyName("item_on_sale")
     @JsonProperty("item_on_sale")
-    public Boolean itemOnSale;
+    private Boolean itemOnSale;
 
     @PropertyName("item_image")
     @JsonProperty("item_image")
-    public String itemImage;
+    private String itemImage;
 
     @PropertyName("store_name")
     @JsonProperty("store_name")
-    public String storeName;
+    private String storeName;
 
     @PropertyName("store_address")
     @JsonProperty("store_address")
-    public String storeAddress;
+    private String storeAddress;
 
     @PropertyName("user_item_quantity")
     @JsonProperty("user_item_quantity")
-    public Integer userItemQuantity;
+    private Integer userItemQuantity;
 
     @PropertyName("sale_price")
     @JsonProperty("sale_price")
-    public Double salePrice;
+    private Double salePrice;
 
     @PropertyName("cooking_time")
     @JsonProperty("cooking_time")
-    public Integer cookingTime;
+    private Integer cookingTime;
 
     @PropertyName("additional_information")
     @JsonProperty("additional_information")
-    public String additionalInformation;
+    private String additionalInformation;
 
     @PropertyName("store_ref")
     @JsonProperty("store_ref")
-    public DocumentReference storeRef;
+    private DocumentReference storeRef;
 
     @Builder
     public Item(String itemId, String itemName, String itemDescription, Integer originalPrice, Double salePercent, Timestamp itemCreated, Timestamp itemModified, Integer itemQuantity, Boolean itemOnSale, String itemImage, String storeName, String storeAddress, Integer userItemQuantity, Double salePrice, Integer cookingTime, String additionalInformation, DocumentReference storeRef) {
