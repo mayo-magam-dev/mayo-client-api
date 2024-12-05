@@ -1,6 +1,8 @@
 package com.mayo.client.mayoclientapi.application.service;
 
-import com.google.cloud.firestore.DocumentReference;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistance.domain.Reservation;
@@ -67,7 +69,7 @@ public class StoreService {
         return list;
     }
 
-    public ReadRecentlyStoreResponse getRecentlyUserId(String userId) {
+    public ReadRecentlyStoreResponse getRecentlyUserId(String userId){
 
         Reservation reservation = reservationRepository.findRecentlyByUserId(userId)
                 .orElseThrow(() -> new ApplicationException(
