@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,25 +93,25 @@ public class User {
         this.noticeStores = noticeStores;
     }
 
-    public Map<String, Object> toMap(User user) {
+    public Map<String, Object> toMap() {
         Map<String, Object> result = new HashMap<>();
-        result.put("uid", user.getUid());
-        result.put("email", user.getEmail());
-        result.put("display_name", user.getDisplayName());
-        result.put("photo_url", user.getPhotoUrl());
-        result.put("created_time", user.getCreatedTime());
-        result.put("phone_number", user.getPhoneNumber());
-        result.put("is_manager", user.getIsManager());
-        result.put("agree_terms1", user.getAgreeTerms1());
-        result.put("agree_terms2", user.getAgreeTerms2());
-        result.put("agree_marketing", user.getAgreeMarketing());
-        result.put("currentLocation", user.getCurrentLocation());
-        result.put("gender", user.getGender());
-        result.put("name", user.getName());
-        result.put("birthday", user.getBirthday());
-        result.put("store_ref", user.getStoreRef());
-        result.put("favorite_stores", user.getFavoriteStores());
-        result.put("notice_stores", user.getNoticeStores());
+        result.put("uid", getUid());
+        result.put("email", getEmail());
+        result.put("display_name", getDisplayName());
+        result.put("photo_url", getPhotoUrl());
+        result.put("created_time", getCreatedTime());
+        result.put("phone_number", getPhoneNumber());
+        result.put("is_manager", getIsManager());
+        result.put("agree_terms1", getAgreeTerms1());
+        result.put("agree_terms2", getAgreeTerms2());
+        result.put("agree_marketing", getAgreeMarketing());
+        result.put("currentLocation", getCurrentLocation());
+        result.put("gender", getGender());
+        result.put("name", getName());
+        result.put("birthday", getBirthday());
+        result.put("store_ref", getStoreRef());
+        result.put("favorite_stores", getFavoriteStores());
+        result.put("notice_stores", getNoticeStores());
 
         return result;
     }
