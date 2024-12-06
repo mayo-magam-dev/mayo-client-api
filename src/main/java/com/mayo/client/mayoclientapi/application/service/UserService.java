@@ -28,8 +28,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
 
-    public void createUser(CreateUserRequest request) {
-        userRepository.save(request.toEntity());
+    public void createUser(CreateUserRequest request, String uid) {
+        userRepository.save(request.toEntity(uid));
     }
 
     public ReadUserResponse getUser(String userId) {

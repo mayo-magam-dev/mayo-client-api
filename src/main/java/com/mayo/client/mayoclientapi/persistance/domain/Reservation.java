@@ -9,7 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @NoArgsConstructor
 @Getter
@@ -70,5 +72,20 @@ public class Reservation {
         this.userRef = userRef;
         this.itemListRef = itemListRef;
         this.cartRef = cartRef;
+    }
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("cart_ref", cartRef);
+        result.put("created_at", createdAt);
+        result.put("pickup_time", pickupTime);
+        result.put("reservation_is_plastic", reservationIsPlastics);
+        result.put("reservation_request", reservationRequest);
+        result.put("reservation_state", reservationState);
+        result.put("store_ref", storeRef);
+        result.put("total_price", totalPrice);
+        result.put("user_ref", userRef);
+
+        return result;
     }
 }

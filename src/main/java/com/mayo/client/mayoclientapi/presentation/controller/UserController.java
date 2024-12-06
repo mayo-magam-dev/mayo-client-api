@@ -41,9 +41,10 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserNoticeStores(req.getAttribute("uid").toString()));
     }
 
+    @Authenticated
     @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody CreateUserRequest request) {
-        userService.createUser(request);
+    public ResponseEntity<Void> createUser(HttpServletRequest req, @RequestBody CreateUserRequest request) {
+        userService.createUser(request, req.getAttribute("uid").toString());
         return ResponseEntity.noContent().build();
     }
 

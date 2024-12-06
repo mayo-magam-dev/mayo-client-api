@@ -20,6 +20,11 @@ public class ReservationRepository {
     private static final String USER_COLLECTION_NAME = "users";
     private static final String COLLECTION_NAME = "reservation";
 
+    public void save(Reservation reservation) {
+        Firestore db = FirestoreClient.getFirestore();
+        db.collection(COLLECTION_NAME).add(reservation.toMap());
+    }
+
     public List<Reservation> getReservationsByUserId(String userId) {
 
         List<Reservation> reservations = new ArrayList<>();

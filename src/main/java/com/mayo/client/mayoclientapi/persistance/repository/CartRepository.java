@@ -49,6 +49,27 @@ public class CartRepository {
         return cartList;
     }
 
+    public List<DocumentReference> findCartRefByUserRef(DocumentReference userRef) {
+
+        Firestore db = FirestoreClient.getFirestore();
+        List<DocumentReference> resultList = new ArrayList<>();
+
+        Query query = db.collection(COLLECTION_NAME_CARTS).whereEqualTo("userRef", userRef)
+                .whereEqualTo("cartActive", true);
+
+        ApiFuture<QuerySnapshot> future = query.get();
+
+        try {
+            for(QueryDocumentSnapshot cartDocument : future.get().getDocuments()) {
+                resultList.add(cartDocument.getReference());
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
+        return resultList;
+    }
+
     public Optional<Cart> findByDocRef(DocumentReference docRef) {
 
         ApiFuture<DocumentSnapshot> future = docRef.get();

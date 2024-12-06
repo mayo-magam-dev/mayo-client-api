@@ -1,6 +1,5 @@
 package com.mayo.client.mayoclientapi.application.service;
 
-import com.google.api.gax.rpc.NotFoundException;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistance.domain.Item;
