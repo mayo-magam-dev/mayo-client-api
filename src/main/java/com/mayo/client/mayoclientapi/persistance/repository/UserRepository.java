@@ -36,6 +36,11 @@ public class UserRepository {
         db.collection(COLLECTION_NAME_USERS).document(user.getUid()).set(user.toMap());
     }
 
+    public void deleteUser(String uid) {
+        Firestore db = FirestoreClient.getFirestore();
+        db.collection(COLLECTION_NAME_USERS).document(uid).delete();
+    }
+
     public void removeNoticeStore(User user, DocumentReference storeRef) {
         Firestore db = FirestoreClient.getFirestore();
 

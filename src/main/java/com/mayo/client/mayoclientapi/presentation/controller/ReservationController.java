@@ -2,16 +2,15 @@ package com.mayo.client.mayoclientapi.presentation.controller;
 
 import com.mayo.client.mayoclientapi.application.service.ReservationService;
 import com.mayo.client.mayoclientapi.common.annotation.Authenticated;
+import com.mayo.client.mayoclientapi.presentation.dto.request.CreateReservationRequest;
 import com.mayo.client.mayoclientapi.presentation.dto.response.ReadReservationDetailResponse;
 import com.mayo.client.mayoclientapi.presentation.dto.response.ReadReservationResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,5 +32,12 @@ public class ReservationController {
     @GetMapping("/{reservationId}")
     public ResponseEntity<ReadReservationDetailResponse> getReservationById(@PathVariable("reservationId") String reservationId) {
         return ResponseEntity.ok(reservationService.getReservationDetailById(reservationId));
+    }
+
+    @Authenticated
+    @PostMapping()
+    public ResponseEntity<Void> createReservation(HttpServletRequest req, @RequestBody CreateReservationRequest request) {
+        reservationService.createReservation(request, req.getAttribute("uid").toString());
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
