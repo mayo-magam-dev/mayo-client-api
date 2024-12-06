@@ -1,6 +1,7 @@
 package com.mayo.client.mayoclientapi.application.service;
 
 import com.google.cloud.firestore.DocumentReference;
+import com.mayo.client.mayoclientapi.common.annotation.FirestoreTransactional;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistance.domain.Cart;
@@ -8,7 +9,6 @@ import com.mayo.client.mayoclientapi.persistance.domain.Item;
 import com.mayo.client.mayoclientapi.persistance.domain.Reservation;
 import com.mayo.client.mayoclientapi.persistance.domain.Store;
 import com.mayo.client.mayoclientapi.persistance.repository.*;
-import com.mayo.client.mayoclientapi.presentation.dto.request.CreateCartRequest;
 import com.mayo.client.mayoclientapi.presentation.dto.request.CreateReservationRequest;
 import com.mayo.client.mayoclientapi.presentation.dto.response.*;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
+@FirestoreTransactional
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
@@ -29,7 +30,7 @@ public class ReservationService {
     private final CartRepository cartRepository;
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
-    private final CartService cartService;
+    private final FCMService fcmService;
 
     public List<ReadReservationResponse> getReservationsByUserId(String userId) {
 
@@ -126,5 +127,9 @@ public class ReservationService {
         }
 
         reservationRepository.save(request.toEntity(cartRefList, storeRef, totalPrice, userRef));
+
+        List<String> tokens = userRepository.findFCMTokenByStoresId(storeRef.getId());
+
+        fcmService.sendNewReservationMessage(tokens);
     }
 }
