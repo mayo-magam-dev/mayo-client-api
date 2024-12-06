@@ -2,9 +2,7 @@ package com.mayo.client.mayoclientapi.presentation.controller;
 
 import com.mayo.client.mayoclientapi.application.service.UserService;
 import com.mayo.client.mayoclientapi.common.annotation.Authenticated;
-import com.mayo.client.mayoclientapi.presentation.dto.request.CreateUserRequest;
-import com.mayo.client.mayoclientapi.presentation.dto.request.UpdateFavoriteStoreRequest;
-import com.mayo.client.mayoclientapi.presentation.dto.request.UpdateNoticeStoreRequest;
+import com.mayo.client.mayoclientapi.presentation.dto.request.*;
 import com.mayo.client.mayoclientapi.presentation.dto.response.ReadStoreResponse;
 import com.mayo.client.mayoclientapi.presentation.dto.response.ReadUserResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -66,6 +64,20 @@ public class UserController {
     @DeleteMapping
     public ResponseEntity<Void> deleteUser(HttpServletRequest req) {
         userService.deleteUser(req.getAttribute("uid").toString());
+        return ResponseEntity.noContent().build();
+    }
+
+    @Authenticated
+    @PutMapping("/nickname")
+    public ResponseEntity<Void> updateNickName(HttpServletRequest req, @RequestBody UpdateNickNameRequest request) {
+        userService.updateNickName(req.getAttribute("uid").toString(), request.nickName());
+        return ResponseEntity.noContent().build();
+    }
+
+    @Authenticated
+    @PutMapping("/email")
+    public ResponseEntity<Void> updateEmail(HttpServletRequest req, @RequestBody UpdateEmailRequest request) {
+        userService.updateEmail(req.getAttribute("uid").toString(), request.email());
         return ResponseEntity.noContent().build();
     }
 }

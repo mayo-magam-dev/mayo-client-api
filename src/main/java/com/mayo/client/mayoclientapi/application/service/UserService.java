@@ -126,4 +126,24 @@ public class UserService {
             userRepository.addFavoriteStore(user, target);
         }
     }
+
+    public void updateNickName(String userId, String nickName) {
+
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new ApplicationException(
+                        ErrorStatus.toErrorStatus("해당하는 유저가 없습니다.", 404, LocalDateTime.now())
+                ));
+
+        userRepository.updateUserNickName(userId, nickName);
+    }
+
+    public void updateEmail(String userId, String email) {
+
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new ApplicationException(
+                        ErrorStatus.toErrorStatus("해당하는 유저가 없습니다.", 404, LocalDateTime.now())
+                ));
+
+        userRepository.updateUserEmail(userId, email);
+    }
 }
