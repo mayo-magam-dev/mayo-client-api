@@ -61,4 +61,11 @@ public class UserController {
         userService.updateFavoriteStore(request, req.getAttribute("uid").toString());
         return ResponseEntity.noContent().build();
     }
+
+    @Authenticated
+    @DeleteMapping
+    public ResponseEntity<Void> deleteUser(HttpServletRequest req) {
+        userService.deleteUser(req.getAttribute("uid").toString());
+        return ResponseEntity.noContent().build();
+    }
 }

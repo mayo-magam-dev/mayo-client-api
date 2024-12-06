@@ -32,6 +32,10 @@ public class UserService {
         userRepository.save(request.toEntity(uid));
     }
 
+    public void deleteUser(String uid) {
+        userRepository.deleteUser(uid);
+    }
+
     public ReadUserResponse getUser(String userId) {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new ApplicationException(
