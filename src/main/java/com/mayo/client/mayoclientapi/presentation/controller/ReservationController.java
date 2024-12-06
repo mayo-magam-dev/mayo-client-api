@@ -55,7 +55,7 @@ public class ReservationController {
 
     @Operation(summary = "유저의 장바구니에 있는 정보로 예약을 진행합니다.", description = "유저의 장바구니에 있는 정보로 예약을 진행합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "예약 성공", content = @Content(schema = @Schema(implementation = List.class))),
+            @ApiResponse(responseCode = "200", description = "예약 성공"),
             @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
             @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
     })
