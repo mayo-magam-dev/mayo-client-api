@@ -99,7 +99,7 @@ public class BoardRepository {
         Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
-                .whereEqualTo("category", FAQType.UPDATE_INFO)
+                .whereEqualTo("category", FAQType.UPDATE_INFO.getCode())
                 .orderBy("write_time", Query.Direction.DESCENDING);
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
         QuerySnapshot querySnapshot = null;
@@ -124,7 +124,7 @@ public class BoardRepository {
         Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
-                .whereEqualTo("category", FAQType.DELETE_ACCOUNT)
+                .whereEqualTo("category", FAQType.DELETE_ACCOUNT.getCode())
                 .orderBy("write_time", Query.Direction.DESCENDING);
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
         QuerySnapshot querySnapshot = null;
@@ -149,7 +149,7 @@ public class BoardRepository {
         Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
-                .whereEqualTo("category", FAQType.STORE_PICKUP)
+                .whereEqualTo("category", FAQType.STORE_PICKUP.getCode())
                 .orderBy("write_time", Query.Direction.DESCENDING);
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
         QuerySnapshot querySnapshot = null;
@@ -174,7 +174,7 @@ public class BoardRepository {
         Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
-                .whereEqualTo("category", FAQType.ORDER_HISTORY)
+                .whereEqualTo("category", FAQType.ORDER_HISTORY.getCode())
                 .orderBy("write_time", Query.Direction.DESCENDING);
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
         QuerySnapshot querySnapshot = null;
@@ -199,7 +199,7 @@ public class BoardRepository {
         Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
-                .whereEqualTo("category", FAQType.ORDER_NOTIFICATION)
+                .whereEqualTo("category", FAQType.ORDER_NOTIFICATION.getCode())
                 .orderBy("write_time", Query.Direction.DESCENDING);
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
         QuerySnapshot querySnapshot = null;
@@ -224,7 +224,7 @@ public class BoardRepository {
         Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
-                .whereEqualTo("category", FAQType.MAIN_FEATURES)
+                .whereEqualTo("category", FAQType.MAIN_FEATURES.getCode())
                 .orderBy("write_time", Query.Direction.DESCENDING);
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
         QuerySnapshot querySnapshot = null;
@@ -249,7 +249,7 @@ public class BoardRepository {
         Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
-                .whereEqualTo("category", FAQType.HOW_TO_USE)
+                .whereEqualTo("category", FAQType.HOW_TO_USE.getCode())
                 .orderBy("write_time", Query.Direction.DESCENDING);
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
         QuerySnapshot querySnapshot = null;
@@ -274,7 +274,7 @@ public class BoardRepository {
         Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
-                .whereEqualTo("category", FAQType.PAYMENT)
+                .whereEqualTo("category", FAQType.PAYMENT.getCode())
                 .orderBy("write_time", Query.Direction.DESCENDING);
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
         QuerySnapshot querySnapshot = null;
@@ -299,7 +299,7 @@ public class BoardRepository {
         Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
-                .whereEqualTo("category", FAQType.COUPON)
+                .whereEqualTo("category", FAQType.COUPON.getCode())
                 .orderBy("write_time", Query.Direction.DESCENDING);
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
         QuerySnapshot querySnapshot = null;
@@ -324,7 +324,7 @@ public class BoardRepository {
         Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
-                .whereEqualTo("category", FAQType.EVENT)
+                .whereEqualTo("category", FAQType.EVENT.getCode())
                 .orderBy("write_time", Query.Direction.DESCENDING);
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
         QuerySnapshot querySnapshot = null;
@@ -349,7 +349,7 @@ public class BoardRepository {
         Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
-                .whereEqualTo("category", FAQType.ETC)
+                .whereEqualTo("category", FAQType.ETC.getCode())
                 .orderBy("write_time", Query.Direction.DESCENDING);
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
         QuerySnapshot querySnapshot = null;
