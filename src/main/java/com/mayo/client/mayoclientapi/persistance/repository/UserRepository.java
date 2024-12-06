@@ -14,10 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Repository
@@ -71,6 +68,24 @@ public class UserRepository {
         db.collection(COLLECTION_NAME_USERS)
                 .document(user.getUid())
                 .update("favorite_stores", FieldValue.arrayUnion(storeRef));
+    }
+
+    public void updateUserNickName(String uid, String nickName) {
+        Firestore db = FirestoreClient.getFirestore();
+
+        db.collection(COLLECTION_NAME_USERS)
+                .document(uid)
+                .set(Collections.singletonMap("display_name", nickName), SetOptions.merge());
+
+    }
+
+    public void updateUserEmail(String uid, String email) {
+        Firestore db = FirestoreClient.getFirestore();
+
+        db.collection(COLLECTION_NAME_USERS)
+                .document(uid)
+                .set(Collections.singletonMap("email", email), SetOptions.merge());
+
     }
 
     public Optional<DocumentReference> findDocByUserId(String uid) {
