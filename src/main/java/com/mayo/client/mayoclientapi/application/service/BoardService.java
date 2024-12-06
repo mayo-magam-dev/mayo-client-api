@@ -31,6 +31,50 @@ public class BoardService {
         return boardRepository.getEventBoard().stream().map(ReadBoardResponse::from).toList();
     }
 
+    public List<ReadBoardResponse> getUpdateInfoFAQ() {
+        return boardRepository.findUpdateInfo().stream().map(ReadBoardResponse::from).toList();
+    }
+
+    public List<ReadBoardResponse> getDeleteAccountFAQ() {
+        return boardRepository.findDeleteAccount().stream().map(ReadBoardResponse::from).toList();
+    }
+
+    public List<ReadBoardResponse> getStorePickUpFAQ() {
+        return boardRepository.findStorePickUp().stream().map(ReadBoardResponse::from).toList();
+    }
+
+    public List<ReadBoardResponse> getOrderHistoryFAQ() {
+        return boardRepository.findOrderHistory().stream().map(ReadBoardResponse::from).toList();
+    }
+
+    public List<ReadBoardResponse> getOrderNotificationFAQ() {
+        return boardRepository.findOrderNotification().stream().map(ReadBoardResponse::from).toList();
+    }
+
+    public List<ReadBoardResponse> getMainFeatureFAQ() {
+        return boardRepository.findMainFeature().stream().map(ReadBoardResponse::from).toList();
+    }
+
+    public List<ReadBoardResponse> getHowToUseFAQ() {
+        return boardRepository.findHowToUse().stream().map(ReadBoardResponse::from).toList();
+    }
+
+    public List<ReadBoardResponse> getPaymentFAQ() {
+        return boardRepository.findPayment().stream().map(ReadBoardResponse::from).toList();
+    }
+
+    public List<ReadBoardResponse> getCouponFAQ() {
+        return boardRepository.findCoupon().stream().map(ReadBoardResponse::from).toList();
+    }
+
+    public List<ReadBoardResponse> getEventFAQ() {
+        return boardRepository.findEventFAQ().stream().map(ReadBoardResponse::from).toList();
+    }
+
+    public List<ReadBoardResponse> getEtcFAQ() {
+        return boardRepository.findETC().stream().map(ReadBoardResponse::from).toList();
+    }
+
     public ReadBoardResponse getBoard(String id) {
         Board board = boardRepository.getBoardById(id)
                 .orElseThrow(() -> new ApplicationException(
