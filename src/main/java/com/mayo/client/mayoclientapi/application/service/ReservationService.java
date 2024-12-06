@@ -7,14 +7,12 @@ import com.mayo.client.mayoclientapi.persistance.domain.Cart;
 import com.mayo.client.mayoclientapi.persistance.domain.Item;
 import com.mayo.client.mayoclientapi.persistance.domain.Reservation;
 import com.mayo.client.mayoclientapi.persistance.domain.Store;
-import com.mayo.client.mayoclientapi.persistance.repository.CartRepository;
-import com.mayo.client.mayoclientapi.persistance.repository.ItemRepository;
-import com.mayo.client.mayoclientapi.persistance.repository.ReservationRepository;
-import com.mayo.client.mayoclientapi.persistance.repository.StoreRepository;
+import com.mayo.client.mayoclientapi.persistance.repository.*;
+import com.mayo.client.mayoclientapi.presentation.dto.request.CreateCartRequest;
+import com.mayo.client.mayoclientapi.presentation.dto.request.CreateReservationRequest;
 import com.mayo.client.mayoclientapi.presentation.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -30,6 +28,8 @@ public class ReservationService {
     private final ItemRepository itemRepository;
     private final CartRepository cartRepository;
     private final StoreRepository storeRepository;
+    private final UserRepository userRepository;
+    private final CartService cartService;
 
     public List<ReadReservationResponse> getReservationsByUserId(String userId) {
 
@@ -92,5 +92,39 @@ public class ReservationService {
         }
 
         return ReadReservationDetailResponse.from(reservation, store, cartList);
+    }
+
+    public void createReservation(CreateReservationRequest request, String uid) {
+
+        DocumentReference userRef = userRepository.findDocByUserId(uid)
+                .orElseThrow(() -> new ApplicationException(
+                        ErrorStatus.toErrorStatus("해당하는 유저가 없습니다.", 404, LocalDateTime.now())
+                ));
+
+        List<DocumentReference> cartRefList = cartRepository.findCartRefByUserRef(userRef);
+        List<Cart> cartList = cartRepository.findCartsByUserRef(userRef);
+        DocumentReference storeRef = cartList.get(0).getStoreRef();
+        Double totalPrice = (double) 0;
+
+        for(Cart cart : cartList) {
+
+            Item item = itemRepository.findItemByDocRef(cart.getItem())
+                    .orElseThrow(() -> new ApplicationException(
+                            ErrorStatus.toErrorStatus("해당하는 아이템이 없습니다.", 404, LocalDateTime.now())
+                    ));
+
+            if(item.getItemQuantity() >= cart.getItemCount()) {
+                itemRepository.updateItemQuantityMinus(item.getItemId(), cart.getItemCount());
+                totalPrice += item.getSalePrice() * cart.getItemCount();
+            } else {
+                throw new ApplicationException(
+                        ErrorStatus.toErrorStatus("재고가 부족합니다.", 404, LocalDateTime.now())
+                );
+            }
+
+            cartRepository.updateCartIsActiveFalse(cart.getCartId());
+        }
+
+        reservationRepository.save(request.toEntity(cartRefList, storeRef, totalPrice, userRef));
     }
 }

@@ -16,7 +16,7 @@ public record CreateUserRequest(
         Boolean agreeTerms1,
         Boolean agreeTerms2
 ) {
-    public User toEntity() {
+    public User toEntity(String uid) {
         return User.builder()
                 .uid(uid)
                 .userid(uid)
