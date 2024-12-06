@@ -8,7 +8,8 @@ import lombok.Builder;
 @Builder
 public record ReadCartResponse(
         String cartId,
-        Integer itemCount,
+        Integer cartItemCount,
+        Integer itemQuantity,
         Double subtotal,
         String itemName,
         String itemImage,
@@ -17,7 +18,8 @@ public record ReadCartResponse(
     public static ReadCartResponse from(Cart cart, Item item, Store store) {
         return ReadCartResponse.builder()
                 .cartId(cart.getCartId())
-                .itemCount(cart.getItemCount())
+                .cartItemCount(cart.getItemCount())
+                .itemQuantity(item.getItemQuantity())
                 .subtotal(cart.getSubtotal())
                 .itemName(item.getItemName())
                 .itemImage(item.getItemImage())

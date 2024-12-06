@@ -40,6 +40,12 @@ public class CartService {
                         ErrorStatus.toErrorStatus("장바구니와 다른 가게 입니다.", 400, LocalDateTime.now())
                 );
             }
+
+            if(cartResponseList.get(0).itemQuantity() > request.itemCount()) {
+                throw new ApplicationException(
+                        ErrorStatus.toErrorStatus("현재 주문 가능한 수량을 초과하였습니다.", 400, LocalDateTime.now())
+                );
+            }
         }
 
         Item item = itemRepository.findItemById(request.itemId())
