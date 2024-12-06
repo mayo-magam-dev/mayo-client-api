@@ -2,10 +2,10 @@ package com.mayo.client.mayoclientapi.persistance.repository;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
-import com.google.firebase.cloud.FirestoreClient;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistance.domain.Reservation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -15,24 +15,24 @@ import java.util.concurrent.ExecutionException;
 
 @Repository
 @Slf4j
+@RequiredArgsConstructor
 public class ReservationRepository {
 
     private static final String USER_COLLECTION_NAME = "users";
     private static final String COLLECTION_NAME = "reservation";
+    private final Firestore firestore;
 
     public void save(Reservation reservation) {
-        Firestore db = FirestoreClient.getFirestore();
-        db.collection(COLLECTION_NAME).add(reservation.toMap());
+        firestore.collection(COLLECTION_NAME).add(reservation.toMap());
     }
 
     public List<Reservation> getReservationsByUserId(String userId) {
 
         List<Reservation> reservations = new ArrayList<>();
-        Firestore db = FirestoreClient.getFirestore();
 
-        DocumentReference userDocumentId = db.collection(USER_COLLECTION_NAME).document(userId);
+        DocumentReference userDocumentId = firestore.collection(USER_COLLECTION_NAME).document(userId);
 
-        CollectionReference reservationRef = db.collection(COLLECTION_NAME);
+        CollectionReference reservationRef = firestore.collection(COLLECTION_NAME);
         Query query = reservationRef
                 .whereEqualTo("user_ref", userDocumentId)
                 .orderBy("created_at", Query.Direction.DESCENDING);
@@ -56,10 +56,8 @@ public class ReservationRepository {
 
     public Optional<Reservation> findByReservationId(String reservationId) {
 
-        Firestore db = FirestoreClient.getFirestore();
-
         try {
-            DocumentReference docRef = db.collection("reservation").document(reservationId);
+            DocumentReference docRef = firestore.collection("reservation").document(reservationId);
             ApiFuture<DocumentSnapshot> future = docRef.get();
             DocumentSnapshot document = future.get();
 
@@ -74,11 +72,9 @@ public class ReservationRepository {
 
     public Optional<Reservation> findRecentlyByUserId(String userId) {
 
-        Firestore db = FirestoreClient.getFirestore();
+        DocumentReference userDocumentId = firestore.collection(USER_COLLECTION_NAME).document(userId);
 
-        DocumentReference userDocumentId = db.collection(USER_COLLECTION_NAME).document(userId);
-
-        CollectionReference reservationRef = db.collection(COLLECTION_NAME);
+        CollectionReference reservationRef = firestore.collection(COLLECTION_NAME);
         Query query = reservationRef
                 .whereEqualTo("user_ref", userDocumentId)
                 .orderBy("created_at", Query.Direction.DESCENDING)

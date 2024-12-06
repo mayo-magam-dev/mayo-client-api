@@ -2,11 +2,11 @@ package com.mayo.client.mayoclientapi.persistance.repository;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
-import com.google.firebase.cloud.FirestoreClient;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistance.domain.Item;
 import com.mayo.client.mayoclientapi.presentation.dto.response.ReadFirstItemResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -17,15 +17,15 @@ import java.util.concurrent.ExecutionException;
 
 @Repository
 @Slf4j
+@RequiredArgsConstructor
 public class ItemRepository {
 
     private static final String COLLECTION_NAME = "items";
+    private final Firestore firestore;
 
     public Optional<DocumentReference> findDocRefById(String itemId) {
 
-        Firestore db = FirestoreClient.getFirestore();
-
-        ApiFuture<DocumentSnapshot> future = db.collection(COLLECTION_NAME).document(itemId).get();
+        ApiFuture<DocumentSnapshot> future = firestore.collection(COLLECTION_NAME).document(itemId).get();
 
         try {
             return Optional.of(future.get().getReference());
@@ -56,7 +56,6 @@ public class ItemRepository {
 
         List<Item> items = new ArrayList<>();
 
-        Firestore firestore = FirestoreClient.getFirestore();
         DocumentReference storeDocumentId = firestore.collection("stores").document(storeId);
         CollectionReference itemsRef = firestore.collection("items");
         Query query = itemsRef.whereEqualTo("store_ref", storeDocumentId);
@@ -79,8 +78,6 @@ public class ItemRepository {
 
     public Double findMaxPercentItemByStoreId(String storeId) {
 
-        Firestore firestore = FirestoreClient.getFirestore();
-
         DocumentReference storeDocumentId = firestore.collection("stores").document(storeId);
         CollectionReference itemsRef = firestore.collection("items");
         Query query = itemsRef.whereEqualTo("store_ref", storeDocumentId).orderBy("sale_percent", Query.Direction.DESCENDING);
@@ -99,7 +96,6 @@ public class ItemRepository {
 
     public void updateItemsStateOutOfStock(String storeId) {
 
-        Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference itemRef = firestore.collection("items");
         DocumentReference storesDocumentId = firestore.collection("stores").document(storeId);
         QuerySnapshot querySnapshot = null;
@@ -118,10 +114,8 @@ public class ItemRepository {
 
     public void updateItemQuantityMinus(String itemId, Integer count) {
 
-        Firestore db = FirestoreClient.getFirestore();
-
         try {
-            DocumentReference docRef = db.collection("items").document(itemId);
+            DocumentReference docRef = firestore.collection("items").document(itemId);
             ApiFuture<DocumentSnapshot> future = docRef.get();
             DocumentSnapshot itemSnapshot = future.get();
 
@@ -140,10 +134,9 @@ public class ItemRepository {
     }
 
     public Optional<Item> findItemById(String itemId) {
-        Firestore db = FirestoreClient.getFirestore();
 
         try {
-            DocumentReference docRef = db.collection("items").document(itemId);
+            DocumentReference docRef = firestore.collection("items").document(itemId);
             ApiFuture<DocumentSnapshot> future = docRef.get();
             DocumentSnapshot itemSnapshot = future.get();
 

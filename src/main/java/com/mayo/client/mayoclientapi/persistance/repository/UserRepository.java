@@ -27,62 +27,49 @@ public class UserRepository {
     private static final String FIELD_FCM_TOKEN = "fcm_token";
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final Firestore firestore;
 
     public void save(User user) {
-        Firestore db = FirestoreClient.getFirestore();
-        db.collection(COLLECTION_NAME_USERS).document(user.getUid()).set(user.toMap());
+        firestore.collection(COLLECTION_NAME_USERS).document(user.getUid()).set(user.toMap());
     }
 
     public void deleteUser(String uid) {
-        Firestore db = FirestoreClient.getFirestore();
-        db.collection(COLLECTION_NAME_USERS).document(uid).delete();
+        firestore.collection(COLLECTION_NAME_USERS).document(uid).delete();
     }
 
     public void removeNoticeStore(User user, DocumentReference storeRef) {
-        Firestore db = FirestoreClient.getFirestore();
-
-        db.collection(COLLECTION_NAME_USERS)
+        firestore.collection(COLLECTION_NAME_USERS)
                 .document(user.getUid())
                 .update("noticeStores", FieldValue.arrayRemove(storeRef));
     }
 
     public void addNoticeStore(User user, DocumentReference storeRef) {
-        Firestore db = FirestoreClient.getFirestore();
-
-        db.collection(COLLECTION_NAME_USERS)
+        firestore.collection(COLLECTION_NAME_USERS)
                 .document(user.getUid())
                 .update("noticeStores", FieldValue.arrayUnion(storeRef));
     }
 
     public void removeFavoriteStore(User user, DocumentReference storeRef) {
-        Firestore db = FirestoreClient.getFirestore();
-
-        db.collection(COLLECTION_NAME_USERS)
+        firestore.collection(COLLECTION_NAME_USERS)
                 .document(user.getUid())
                 .update("favorite_stores", FieldValue.arrayRemove(storeRef));
     }
 
     public void addFavoriteStore(User user, DocumentReference storeRef) {
-        Firestore db = FirestoreClient.getFirestore();
-
-        db.collection(COLLECTION_NAME_USERS)
+        firestore.collection(COLLECTION_NAME_USERS)
                 .document(user.getUid())
                 .update("favorite_stores", FieldValue.arrayUnion(storeRef));
     }
 
     public void updateUserNickName(String uid, String nickName) {
-        Firestore db = FirestoreClient.getFirestore();
-
-        db.collection(COLLECTION_NAME_USERS)
+        firestore.collection(COLLECTION_NAME_USERS)
                 .document(uid)
                 .set(Collections.singletonMap("display_name", nickName), SetOptions.merge());
 
     }
 
     public void updateUserEmail(String uid, String email) {
-        Firestore db = FirestoreClient.getFirestore();
-
-        db.collection(COLLECTION_NAME_USERS)
+        firestore.collection(COLLECTION_NAME_USERS)
                 .document(uid)
                 .set(Collections.singletonMap("email", email), SetOptions.merge());
 
@@ -90,9 +77,7 @@ public class UserRepository {
 
     public Optional<DocumentReference> findDocByUserId(String uid) {
 
-        Firestore db = FirestoreClient.getFirestore();
-
-        ApiFuture<DocumentSnapshot> future = db.collection(COLLECTION_NAME_USERS).document(uid).get();
+        ApiFuture<DocumentSnapshot> future = firestore.collection(COLLECTION_NAME_USERS).document(uid).get();
 
         try {
             return Optional.of(future.get().getReference());
@@ -105,9 +90,7 @@ public class UserRepository {
 
     public Optional<User> findByUserId(String userId) {
 
-        Firestore db = FirestoreClient.getFirestore();
-
-        DocumentReference documentReference = db.collection("users").document(userId);
+        DocumentReference documentReference = firestore.collection("users").document(userId);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
         DocumentSnapshot document = null;
 
@@ -122,10 +105,8 @@ public class UserRepository {
 
     public List<String> getFCMTokenByUserId(String userId) {
 
-        Firestore db = FirestoreClient.getFirestore();
-
         List<String> fcmTokens = new ArrayList<>();
-        DocumentReference userRef = db.collection("users").document(userId);
+        DocumentReference userRef = firestore.collection("users").document(userId);
 
         try {
             DocumentSnapshot userDocument = userRef.get().get();
@@ -151,12 +132,10 @@ public class UserRepository {
 
     public List<String> findFCMTokenByStoresId(String storesId) {
 
-        Firestore db = FirestoreClient.getFirestore();
-
         List<String> fcmTokens = new ArrayList<>();
 
-        CollectionReference usersCollection = db.collection("users");
-        DocumentReference storesDocumentId = db.collection("stores").document(storesId);
+        CollectionReference usersCollection = firestore.collection("users");
+        DocumentReference storesDocumentId = firestore.collection("stores").document(storesId);
         Query query = usersCollection.whereEqualTo("store_ref", storesDocumentId);
 
         try {
@@ -178,11 +157,9 @@ public class UserRepository {
         return fcmTokens;
     }
 
-    public void createFCMTokenById(String userId, String token){
+    public void createFCMTokenById(String userId, String token) {
 
-        Firestore db = FirestoreClient.getFirestore();
-
-        DocumentReference userRef = db.collection("users").document(userId);
+        DocumentReference userRef = firestore.collection("users").document(userId);
 
         DocumentSnapshot userDocument = null;
         try {

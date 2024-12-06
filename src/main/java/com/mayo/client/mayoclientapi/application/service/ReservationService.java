@@ -105,7 +105,7 @@ public class ReservationService {
         List<DocumentReference> cartRefList = cartRepository.findCartRefByUserRef(userRef);
         List<Cart> cartList = cartRepository.findCartsByUserRef(userRef);
         DocumentReference storeRef = cartList.get(0).getStoreRef();
-        double totalPrice = (double) 0;
+        double totalPrice = 0;
 
         for(Cart cart : cartList) {
 
@@ -136,6 +136,10 @@ public class ReservationService {
 
         List<String> tokens = userRepository.findFCMTokenByStoresId(storeRef.getId());
 
-        fcmService.sendNewReservationMessage(tokens);
+        if(fcmService.sendNewReservationMessage(tokens)) {
+            log.info("fcm 발송 성공");
+        } else {
+            log.info("fcm 발송 실패");
+        }
     }
 }
