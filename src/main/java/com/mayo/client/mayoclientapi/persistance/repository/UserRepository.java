@@ -149,7 +149,7 @@ public class UserRepository {
         return fcmTokens;
     }
 
-    public List<String> getFCMTokenByStoresId(String storesId) {
+    public List<String> findFCMTokenByStoresId(String storesId) {
 
         Firestore db = FirestoreClient.getFirestore();
 

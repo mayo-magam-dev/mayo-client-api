@@ -35,7 +35,7 @@ public class ReservationController {
     }
 
     @Authenticated
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<Void> createReservation(HttpServletRequest req, @RequestBody CreateReservationRequest request) {
         reservationService.createReservation(request, req.getAttribute("uid").toString());
         return ResponseEntity.status(HttpStatus.CREATED).build();

@@ -1,6 +1,7 @@
 package com.mayo.client.mayoclientapi.presentation.controller;
 
 import com.mayo.client.mayoclientapi.application.service.ItemService;
+import com.mayo.client.mayoclientapi.common.annotation.FirestoreTransactional;
 import com.mayo.client.mayoclientapi.presentation.dto.response.ReadItemResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

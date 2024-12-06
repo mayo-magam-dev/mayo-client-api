@@ -1,5 +1,6 @@
 package com.mayo.client.mayoclientapi.application.service;
 
+import com.mayo.client.mayoclientapi.common.annotation.FirestoreTransactional;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistance.domain.Item;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@FirestoreTransactional
 @RequiredArgsConstructor
 @Slf4j
 @Service
