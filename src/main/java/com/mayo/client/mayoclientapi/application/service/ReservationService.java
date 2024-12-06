@@ -105,7 +105,7 @@ public class ReservationService {
         List<DocumentReference> cartRefList = cartRepository.findCartRefByUserRef(userRef);
         List<Cart> cartList = cartRepository.findCartsByUserRef(userRef);
         DocumentReference storeRef = cartList.get(0).getStoreRef();
-        Double totalPrice = (double) 0;
+        double totalPrice = (double) 0;
 
         for(Cart cart : cartList) {
 
@@ -114,12 +114,18 @@ public class ReservationService {
                             ErrorStatus.toErrorStatus("해당하는 아이템이 없습니다.", 404, LocalDateTime.now())
                     ));
 
+            if(!item.getItemOnSale()) {
+                throw new ApplicationException(
+                        ErrorStatus.toErrorStatus(item.getItemName() + "은(는) 판매중인 상품이 아닙니다.", 400, LocalDateTime.now())
+                );
+            }
+
             if(item.getItemQuantity() >= cart.getItemCount()) {
                 itemRepository.updateItemQuantityMinus(item.getItemId(), cart.getItemCount());
                 totalPrice += item.getSalePrice() * cart.getItemCount();
             } else {
                 throw new ApplicationException(
-                        ErrorStatus.toErrorStatus("재고가 부족합니다.", 404, LocalDateTime.now())
+                        ErrorStatus.toErrorStatus(item.getItemName() + "상품의 재고가 부족합니다.", 400, LocalDateTime.now())
                 );
             }
 
