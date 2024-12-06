@@ -6,6 +6,7 @@ import com.google.firebase.cloud.FirestoreClient;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistance.domain.Store;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.security.SecureRandom;
@@ -14,16 +15,16 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Repository
+@RequiredArgsConstructor
 public class StoreRepository {
 
     private static final String COLLECTION_NAME = "stores";
+    private final Firestore firestore;
 
     public List<Store> findOpenStores() {
 
-        Firestore db = FirestoreClient.getFirestore();
-
         List<Store> list = new ArrayList<>();
-        ApiFuture<QuerySnapshot> future = db.collection(COLLECTION_NAME)
+        ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION_NAME)
                 .whereEqualTo("open_state", true)
                 .get();
 
@@ -43,9 +44,7 @@ public class StoreRepository {
 
     public Optional<DocumentReference> findDocRefById(String storeId) {
 
-        Firestore db = FirestoreClient.getFirestore();
-
-        ApiFuture<DocumentSnapshot> future = db.collection(COLLECTION_NAME).document(storeId).get();
+        ApiFuture<DocumentSnapshot> future = firestore.collection(COLLECTION_NAME).document(storeId).get();
 
         try {
            return Optional.ofNullable(future.get().getReference());
@@ -57,10 +56,8 @@ public class StoreRepository {
 
     public List<Store> findRandomOpenStores() {
 
-        Firestore db = FirestoreClient.getFirestore();
-
         List<Store> list = new ArrayList<>();
-        ApiFuture<QuerySnapshot> future = db.collection(COLLECTION_NAME)
+        ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION_NAME)
                 .whereEqualTo("open_state", true)
                 .get();
 
@@ -80,8 +77,7 @@ public class StoreRepository {
 
     public Optional<Store> findByStoreId(String storeId) {
 
-        Firestore db = FirestoreClient.getFirestore();
-        DocumentReference documentReference = db.collection(COLLECTION_NAME).document(storeId);
+        DocumentReference documentReference = firestore.collection(COLLECTION_NAME).document(storeId);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
         DocumentSnapshot document = null;
 
@@ -97,8 +93,7 @@ public class StoreRepository {
     public List<Store> findAll() {
 
         List<Store> list = new ArrayList<>();
-        Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> future = db.collection(COLLECTION_NAME).get();
+        ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION_NAME).get();
 
         try {
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
@@ -117,8 +112,7 @@ public class StoreRepository {
     public List<Store> findByCategory(Long category) {
 
         List<Store> list = new ArrayList<>();
-        Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> future = db.collection(COLLECTION_NAME).get();
+        ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION_NAME).get();
 
         try {
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();

@@ -7,6 +7,7 @@ import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistance.domain.Cart;
 import com.mayo.client.mayoclientapi.persistance.domain.Reservation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -18,20 +19,20 @@ import java.util.concurrent.ExecutionException;
 
 @Repository
 @Slf4j
+@RequiredArgsConstructor
 public class CartRepository {
 
     private final String COLLECTION_NAME_CARTS = "carts";
+    private final Firestore firestore;
 
     public void save(Cart cart) {
-        Firestore db = FirestoreClient.getFirestore();
-        db.collection(COLLECTION_NAME_CARTS).add(cart.toMap());
+        firestore.collection(COLLECTION_NAME_CARTS).add(cart.toMap());
     }
 
     public List<Cart> findCartsByUserRef(DocumentReference userRef) {
 
-        Firestore db = FirestoreClient.getFirestore();
         List<Cart> cartList = new ArrayList<>();
-        CollectionReference collectionReference = db.collection(COLLECTION_NAME_CARTS);
+        CollectionReference collectionReference = firestore.collection(COLLECTION_NAME_CARTS);
 
         Query query = collectionReference.whereEqualTo("userRef", userRef)
                 .whereEqualTo("cartActive", true);
@@ -51,10 +52,9 @@ public class CartRepository {
 
     public List<DocumentReference> findCartRefByUserRef(DocumentReference userRef) {
 
-        Firestore db = FirestoreClient.getFirestore();
         List<DocumentReference> resultList = new ArrayList<>();
 
-        Query query = db.collection(COLLECTION_NAME_CARTS).whereEqualTo("userRef", userRef)
+        Query query = firestore.collection(COLLECTION_NAME_CARTS).whereEqualTo("userRef", userRef)
                 .whereEqualTo("cartActive", true);
 
         ApiFuture<QuerySnapshot> future = query.get();
@@ -91,11 +91,9 @@ public class CartRepository {
     }
 
     public Optional<Cart> findCartById(String cartId) {
-
-        Firestore db = FirestoreClient.getFirestore();
-
+        
         try {
-            DocumentReference docRef = db.collection("carts").document(cartId);
+            DocumentReference docRef = firestore.collection("carts").document(cartId);
             ApiFuture<DocumentSnapshot> future = docRef.get();
             DocumentSnapshot cartSnapshot = future.get();
 
@@ -113,10 +111,9 @@ public class CartRepository {
     }
 
     public void updateCartIsActiveFalse(String cartId) {
-        Firestore db = FirestoreClient.getFirestore();
 
         try {
-            DocumentReference docRef = db.collection("carts").document(cartId).get().get().getReference();
+            DocumentReference docRef = firestore.collection("carts").document(cartId).get().get().getReference();
             docRef.update("cartActive", false);
         } catch (InterruptedException | ExecutionException e) {
             throw new ApplicationException(

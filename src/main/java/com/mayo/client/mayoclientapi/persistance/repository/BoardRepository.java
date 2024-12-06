@@ -7,6 +7,7 @@ import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistance.domain.Board;
 import com.mayo.client.mayoclientapi.persistance.domain.type.BoardCategory;
 import com.mayo.client.mayoclientapi.persistance.domain.type.FAQType;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -16,13 +17,15 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 @Repository
+@RequiredArgsConstructor
 public class BoardRepository {
+
+    private final Firestore firestore;
 
     public List<Board> getTermsBoard() {
 
         List<Board> boards = new ArrayList<>();
 
-        Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef.whereEqualTo("category", BoardCategory.TERMSDETAIL.ordinal());
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
@@ -48,7 +51,6 @@ public class BoardRepository {
 
         List<Board> boards = new ArrayList<>();
 
-        Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef.whereEqualTo("category", BoardCategory.NOTICE.ordinal());
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
@@ -71,7 +73,6 @@ public class BoardRepository {
 
         List<Board> boards = new ArrayList<>();
 
-        Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
                 .whereEqualTo("category", BoardCategory.EVENT.ordinal())
@@ -96,7 +97,6 @@ public class BoardRepository {
 
         List<Board> boards = new ArrayList<>();
 
-        Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
                 .whereEqualTo("category", FAQType.UPDATE_INFO.getCode())
@@ -121,7 +121,6 @@ public class BoardRepository {
 
         List<Board> boards = new ArrayList<>();
 
-        Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
                 .whereEqualTo("category", FAQType.DELETE_ACCOUNT.getCode())
@@ -146,7 +145,6 @@ public class BoardRepository {
 
         List<Board> boards = new ArrayList<>();
 
-        Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
                 .whereEqualTo("category", FAQType.STORE_PICKUP.getCode())
@@ -171,7 +169,6 @@ public class BoardRepository {
 
         List<Board> boards = new ArrayList<>();
 
-        Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
                 .whereEqualTo("category", FAQType.ORDER_HISTORY.getCode())
@@ -196,7 +193,6 @@ public class BoardRepository {
 
         List<Board> boards = new ArrayList<>();
 
-        Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
                 .whereEqualTo("category", FAQType.ORDER_NOTIFICATION.getCode())
@@ -221,7 +217,6 @@ public class BoardRepository {
 
         List<Board> boards = new ArrayList<>();
 
-        Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
                 .whereEqualTo("category", FAQType.MAIN_FEATURES.getCode())
@@ -246,7 +241,6 @@ public class BoardRepository {
 
         List<Board> boards = new ArrayList<>();
 
-        Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
                 .whereEqualTo("category", FAQType.HOW_TO_USE.getCode())
@@ -271,7 +265,6 @@ public class BoardRepository {
 
         List<Board> boards = new ArrayList<>();
 
-        Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
                 .whereEqualTo("category", FAQType.PAYMENT.getCode())
@@ -296,7 +289,6 @@ public class BoardRepository {
 
         List<Board> boards = new ArrayList<>();
 
-        Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
                 .whereEqualTo("category", FAQType.COUPON.getCode())
@@ -321,7 +313,6 @@ public class BoardRepository {
 
         List<Board> boards = new ArrayList<>();
 
-        Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
                 .whereEqualTo("category", FAQType.EVENT.getCode())
@@ -346,7 +337,6 @@ public class BoardRepository {
 
         List<Board> boards = new ArrayList<>();
 
-        Firestore firestore = FirestoreClient.getFirestore();
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
                 .whereEqualTo("category", FAQType.ETC.getCode())
@@ -369,8 +359,7 @@ public class BoardRepository {
 
     public Optional<Board> getBoardById(String boardId) {
 
-        Firestore db = FirestoreClient.getFirestore();
-        DocumentReference documentReference = db.collection("board").document(boardId);
+        DocumentReference documentReference = firestore.collection("board").document(boardId);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
         DocumentSnapshot document = null;
 
