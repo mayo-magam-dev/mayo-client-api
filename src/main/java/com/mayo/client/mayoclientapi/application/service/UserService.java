@@ -131,7 +131,7 @@ public class UserService {
 
     public void updateNickName(String userId, String nickName) {
 
-        User user = userRepository.findByUserId(userId)
+        userRepository.findByUserId(userId)
                 .orElseThrow(() -> new ApplicationException(
                         ErrorStatus.toErrorStatus("해당하는 유저가 없습니다.", 404, LocalDateTime.now())
                 ));
@@ -141,7 +141,7 @@ public class UserService {
 
     public void updateEmail(String userId, String email) {
 
-        User user = userRepository.findByUserId(userId)
+        userRepository.findByUserId(userId)
                 .orElseThrow(() -> new ApplicationException(
                         ErrorStatus.toErrorStatus("해당하는 유저가 없습니다.", 404, LocalDateTime.now())
                 ));
