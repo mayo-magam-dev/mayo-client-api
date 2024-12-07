@@ -57,8 +57,11 @@ public class Reservation {
     @PropertyName("cart_ref")
     private List<DocumentReference> cartRef;
 
+    @PropertyName("total_sale_price")
+    private Double totalSalePrice;
+
     @Builder
-    public Reservation(String id, String reservationId, Integer reservationState, String reservationRequest, Boolean reservationIsPlastics, Timestamp createdAt, List<Integer> quantityList, Timestamp pickupTime, Double totalPrice, DocumentReference storeRef, DocumentReference userRef, List<DocumentReference> itemListRef, List<DocumentReference> cartRef) {
+    public Reservation(String id, String reservationId, Integer reservationState, String reservationRequest, Boolean reservationIsPlastics, Timestamp createdAt, List<Integer> quantityList, Timestamp pickupTime, Double totalPrice, DocumentReference storeRef, DocumentReference userRef, List<DocumentReference> itemListRef, List<DocumentReference> cartRef, Double totalSalePrice) {
         this.id = id;
         this.reservationId = reservationId;
         this.reservationState = reservationState;
@@ -72,6 +75,7 @@ public class Reservation {
         this.userRef = userRef;
         this.itemListRef = itemListRef;
         this.cartRef = cartRef;
+        this.totalSalePrice = totalSalePrice;
     }
 
     public Map<String, Object> toMap() {
@@ -85,6 +89,7 @@ public class Reservation {
         result.put("store_ref", storeRef);
         result.put("total_price", totalPrice);
         result.put("user_ref", userRef);
+        result.put("total_sale_price", totalSalePrice);
 
         return result;
     }

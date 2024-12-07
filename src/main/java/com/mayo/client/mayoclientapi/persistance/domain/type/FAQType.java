@@ -1,5 +1,10 @@
 package com.mayo.client.mayoclientapi.persistance.domain.type;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum FAQType {
 
     UPDATE_INFO(11, "정보 수정"),
@@ -17,16 +22,4 @@ public enum FAQType {
     private final int code;
     private final String text;
 
-    FAQType(int code, String text) {
-        this.code = code;
-        this.text = text;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public String getText() {
-        return text;
-    }
 }

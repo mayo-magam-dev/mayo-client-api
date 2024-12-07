@@ -12,7 +12,7 @@ public record CreateReservationRequest(
         Boolean reservationIsPlastic,
         String reservationRequest
 ) {
-    public Reservation toEntity(List<DocumentReference> cartRefList, DocumentReference storeRef, Double totalPrice, DocumentReference userRef) {
+    public Reservation toEntity(List<DocumentReference> cartRefList, DocumentReference storeRef, Double totalPrice, DocumentReference userRef, Double totalSalePrice) {
         return Reservation.builder()
                 .cartRef(cartRefList)
                 .pickupTime(pickupTime)
@@ -23,6 +23,7 @@ public record CreateReservationRequest(
                 .totalPrice(totalPrice)
                 .userRef(userRef)
                 .createdAt(Timestamp.now())
+                .totalSalePrice(totalSalePrice)
                 .build();
     }
 }

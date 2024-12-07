@@ -106,6 +106,7 @@ public class ReservationService {
         List<Cart> cartList = cartRepository.findCartsByUserRef(userRef);
         DocumentReference storeRef = cartList.get(0).getStoreRef();
         double totalPrice = 0;
+        double totalSalePrice = 0;
 
         for(Cart cart : cartList) {
 
@@ -123,6 +124,7 @@ public class ReservationService {
             if(item.getItemQuantity() >= cart.getItemCount()) {
                 itemRepository.updateItemQuantityMinus(item.getItemId(), cart.getItemCount());
                 totalPrice += item.getSalePrice() * cart.getItemCount();
+                totalSalePrice += item.getSalePrice() * cart.getItemCount();
             } else {
                 throw new ApplicationException(
                         ErrorStatus.toErrorStatus(item.getItemName() + "상품의 재고가 부족합니다.", 400, LocalDateTime.now())
@@ -132,7 +134,7 @@ public class ReservationService {
             cartRepository.updateCartIsActiveFalse(cart.getCartId());
         }
 
-        reservationRepository.save(request.toEntity(cartRefList, storeRef, totalPrice, userRef));
+        reservationRepository.save(request.toEntity(cartRefList, storeRef, totalPrice, userRef, totalSalePrice));
 
         List<String> tokens = userRepository.findFCMTokenByStoresId(storeRef.getId());
 

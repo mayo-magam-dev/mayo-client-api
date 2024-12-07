@@ -14,8 +14,8 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .components(new Components())
                 .info(new Info()
-                        .title("mayo API 서버")
-                        .description("mayo 서버 API 명세서 입니다.")
-                        .version("v0.0.1"));
+                        .title("mayo Client API 서버")
+                        .description("mayo Client API 명세서 입니다.")
+                        .version("v1.0.0"));
     }
 }
