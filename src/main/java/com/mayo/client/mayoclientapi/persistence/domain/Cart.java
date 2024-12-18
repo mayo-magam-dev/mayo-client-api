@@ -1,4 +1,4 @@
-package com.mayo.client.mayoclientapi.persistance.domain;
+package com.mayo.client.mayoclientapi.persistence.domain;
 
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentReference;

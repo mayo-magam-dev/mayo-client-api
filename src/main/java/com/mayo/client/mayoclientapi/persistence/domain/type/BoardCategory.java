@@ -1,4 +1,4 @@
-package com.mayo.client.mayoclientapi.persistance.domain.type;
+package com.mayo.client.mayoclientapi.persistence.domain.type;
 
 public enum BoardCategory {
     TERMS, NOTICE, EVENT, TERMSDETAIL

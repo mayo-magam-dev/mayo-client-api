@@ -2,7 +2,7 @@ package com.mayo.client.mayoclientapi.presentation.dto.request;
 
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentReference;
-import com.mayo.client.mayoclientapi.persistance.domain.Cart;
+import com.mayo.client.mayoclientapi.persistence.domain.Cart;
 
 public record CreateCartRequest(
         String itemId,

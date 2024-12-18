@@ -1,8 +1,8 @@
 package com.mayo.client.mayoclientapi.presentation.dto.response;
 
 import com.google.cloud.Timestamp;
-import com.mayo.client.mayoclientapi.persistance.domain.Reservation;
-import com.mayo.client.mayoclientapi.persistance.domain.Store;
+import com.mayo.client.mayoclientapi.persistence.domain.Reservation;
+import com.mayo.client.mayoclientapi.persistence.domain.Store;
 import lombok.Builder;
 
 import java.util.List;

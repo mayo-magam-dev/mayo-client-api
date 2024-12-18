@@ -1,10 +1,10 @@
-package com.mayo.client.mayoclientapi.persistance.repository;
+package com.mayo.client.mayoclientapi.persistence.repository;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
-import com.mayo.client.mayoclientapi.persistance.domain.Item;
+import com.mayo.client.mayoclientapi.persistence.domain.Item;
 import com.mayo.client.mayoclientapi.presentation.dto.response.ReadFirstItemResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

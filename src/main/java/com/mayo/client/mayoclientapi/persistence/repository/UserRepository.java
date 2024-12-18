@@ -1,14 +1,13 @@
-package com.mayo.client.mayoclientapi.persistance.repository;
+package com.mayo.client.mayoclientapi.persistence.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.*;
-import com.google.firebase.cloud.FirestoreClient;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
-import com.mayo.client.mayoclientapi.persistance.domain.FCMToken;
-import com.mayo.client.mayoclientapi.persistance.domain.User;
+import com.mayo.client.mayoclientapi.persistence.domain.FCMToken;
+import com.mayo.client.mayoclientapi.persistence.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
