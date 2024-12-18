@@ -1,8 +1,8 @@
 package com.mayo.client.mayoclientapi.presentation.dto.response;
 
-import com.mayo.client.mayoclientapi.persistance.domain.Cart;
-import com.mayo.client.mayoclientapi.persistance.domain.Item;
-import com.mayo.client.mayoclientapi.persistance.domain.Store;
+import com.mayo.client.mayoclientapi.persistence.domain.Cart;
+import com.mayo.client.mayoclientapi.persistence.domain.Item;
+import com.mayo.client.mayoclientapi.persistence.domain.Store;
 import lombok.Builder;
 
 @Builder

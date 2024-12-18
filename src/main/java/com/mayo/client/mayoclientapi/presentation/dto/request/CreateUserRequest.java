@@ -1,8 +1,8 @@
 package com.mayo.client.mayoclientapi.presentation.dto.request;
 
 import com.google.cloud.Timestamp;
-import com.mayo.client.mayoclientapi.persistance.domain.User;
-import com.mayo.client.mayoclientapi.persistance.domain.type.GenderType;
+import com.mayo.client.mayoclientapi.persistence.domain.User;
+import com.mayo.client.mayoclientapi.persistence.domain.type.GenderType;
 
 public record CreateUserRequest(
         String uid,

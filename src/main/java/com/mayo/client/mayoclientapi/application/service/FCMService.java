@@ -7,8 +7,8 @@ import com.google.cloud.Timestamp;
 import com.mayo.client.mayoclientapi.common.annotation.FirestoreTransactional;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
-import com.mayo.client.mayoclientapi.persistance.repository.PushNotificationRepository;
-import com.mayo.client.mayoclientapi.presentation.dto.FCMMessageDto;
+import com.mayo.client.mayoclientapi.persistence.repository.PushNotificationRepository;
+import com.mayo.client.mayoclientapi.presentation.dto.request.FCMMessageRequest;
 import com.mayo.client.mayoclientapi.presentation.dto.request.CreateClientPushNotificationRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,12 +67,12 @@ public class FCMService {
     }
 
     private String makeMessage(String targetToken, String title, String body, String image)  {
-        FCMMessageDto fcmMessageDto = FCMMessageDto.builder()
+        FCMMessageRequest fcmMessageRequest = FCMMessageRequest.builder()
                 .message(
-                        FCMMessageDto.Message.builder()
+                        FCMMessageRequest.Message.builder()
                                 .token(targetToken)
                                 .notification(
-                                        FCMMessageDto.Notification.builder()
+                                        FCMMessageRequest.Notification.builder()
                                                 .title(title)
                                                 .body(body)
                                                 .image(image)
@@ -84,7 +84,7 @@ public class FCMService {
                 .build();
 
         try {
-            return objectMapper.writeValueAsString(fcmMessageDto);
+            return objectMapper.writeValueAsString(fcmMessageRequest);
         } catch (JsonProcessingException e) {
             throw new ApplicationException(ErrorStatus.toErrorStatus("json 변경 중 오류가 발생하였습니다.", 500, LocalDateTime.now()));
         }

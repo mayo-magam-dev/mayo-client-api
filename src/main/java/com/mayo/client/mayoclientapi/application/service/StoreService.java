@@ -3,11 +3,10 @@ package com.mayo.client.mayoclientapi.application.service;
 import com.mayo.client.mayoclientapi.common.annotation.FirestoreTransactional;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
-import com.mayo.client.mayoclientapi.persistance.domain.Reservation;
-import com.mayo.client.mayoclientapi.persistance.domain.Store;
-import com.mayo.client.mayoclientapi.persistance.repository.ItemRepository;
-import com.mayo.client.mayoclientapi.persistance.repository.ReservationRepository;
-import com.mayo.client.mayoclientapi.persistance.repository.StoreRepository;
+import com.mayo.client.mayoclientapi.persistence.domain.Store;
+import com.mayo.client.mayoclientapi.persistence.repository.ItemRepository;
+import com.mayo.client.mayoclientapi.persistence.repository.ReservationRepository;
+import com.mayo.client.mayoclientapi.persistence.repository.StoreRepository;
 import com.mayo.client.mayoclientapi.presentation.dto.response.ReadRecentlyStoreResponse;
 import com.mayo.client.mayoclientapi.presentation.dto.response.ReadSimpleStoreResponse;
 import com.mayo.client.mayoclientapi.presentation.dto.response.ReadStoreResponse;
@@ -70,17 +69,13 @@ public class StoreService {
 
     public ReadRecentlyStoreResponse getRecentlyUserId(String userId){
 
-        Reservation reservation = reservationRepository.findRecentlyByUserId(userId)
-                .orElseThrow(() -> new ApplicationException(
-                        ErrorStatus.toErrorStatus("해당하는 유저가 없습니다.", 404, LocalDateTime.now())
-                ));
-
-        Store store = storeRepository.findByDocRef(reservation.getStoreRef())
+        return reservationRepository.findRecentlyByUserId(userId)
+                .map(reservationEntity -> storeRepository.findByDocRef(reservationEntity.getStoreRef()))
                 .orElseThrow(() -> new ApplicationException(
                         ErrorStatus.toErrorStatus("해당하는 가게가 없습니다.", 404, LocalDateTime.now())
-                ));
-
-        return ReadRecentlyStoreResponse.from(store);
+                ))
+                .map(ReadRecentlyStoreResponse::from)
+                .orElse(null);
     }
 
     public ReadStoreResponse getStore(String storeId) {

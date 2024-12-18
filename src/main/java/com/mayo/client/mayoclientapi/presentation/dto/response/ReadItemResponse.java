@@ -1,6 +1,6 @@
 package com.mayo.client.mayoclientapi.presentation.dto.response;
 
-import com.mayo.client.mayoclientapi.persistance.domain.Item;
+import com.mayo.client.mayoclientapi.persistence.domain.Item;
 import lombok.Builder;
 
 @Builder

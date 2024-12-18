@@ -1,4 +1,4 @@
-package com.mayo.client.mayoclientapi.presentation.dto;
+package com.mayo.client.mayoclientapi.presentation.dto.request;
 
 
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 @Getter
-public class FCMMessageDto {
+public class FCMMessageRequest {
     private boolean validateOnly;
     private Message message;
 

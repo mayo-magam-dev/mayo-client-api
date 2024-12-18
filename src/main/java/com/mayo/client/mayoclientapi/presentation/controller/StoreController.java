@@ -39,7 +39,7 @@ public class StoreController {
         return ResponseEntity.ok(storeService.getAllStores());
     }
 
-    @Operation(summary = "할인중인 가게 조회", description = "유저의 주문 내역을 모두 가져옵니다.")
+    @Operation(summary = "할인중인 가게 조회", description = "할인 중인 가게를 모두 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "할인 중 가게 조회 성공", content = @Content(schema = @Schema(implementation = List.class))),
             @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),

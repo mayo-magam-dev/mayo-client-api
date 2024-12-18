@@ -2,8 +2,8 @@ package com.mayo.client.mayoclientapi.presentation.dto.request;
 
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentReference;
-import com.mayo.client.mayoclientapi.persistance.domain.Reservation;
-import com.mayo.client.mayoclientapi.persistance.domain.type.ReservationState;
+import com.mayo.client.mayoclientapi.persistence.domain.Reservation;
+import com.mayo.client.mayoclientapi.persistence.domain.type.ReservationState;
 
 import java.util.List;
 

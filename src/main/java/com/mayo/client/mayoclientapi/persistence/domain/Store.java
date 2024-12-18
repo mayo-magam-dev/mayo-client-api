@@ -1,4 +1,4 @@
-package com.mayo.client.mayoclientapi.persistance.domain;
+package com.mayo.client.mayoclientapi.persistence.domain;
 
 import com.google.cloud.firestore.annotation.DocumentId;
 import com.google.firebase.database.PropertyName;

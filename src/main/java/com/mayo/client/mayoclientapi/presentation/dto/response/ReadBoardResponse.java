@@ -1,7 +1,7 @@
 package com.mayo.client.mayoclientapi.presentation.dto.response;
 
 import com.google.cloud.Timestamp;
-import com.mayo.client.mayoclientapi.persistance.domain.Board;
+import com.mayo.client.mayoclientapi.persistence.domain.Board;
 import lombok.Builder;
 
 @Builder
