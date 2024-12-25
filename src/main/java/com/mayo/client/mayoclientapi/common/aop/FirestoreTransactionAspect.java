@@ -25,7 +25,10 @@ public class FirestoreTransactionAspect {
             return firestore.runTransaction(transaction -> {
                 try {
                     return joinPoint.proceed();
-                } catch (Throwable e) {
+                } catch (ApplicationException e) {
+                    throw e;
+                }
+                catch (Throwable e) {
                     throw new ApplicationException(ErrorStatus.toErrorStatus("firebase transaction 오류", 500, LocalDateTime.now()));
                 }
             }).get();

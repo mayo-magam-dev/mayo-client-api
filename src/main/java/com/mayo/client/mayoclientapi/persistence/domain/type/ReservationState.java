@@ -1,5 +1,18 @@
 package com.mayo.client.mayoclientapi.persistence.domain.type;
 
+import lombok.Getter;
+
+@Getter
 public enum ReservationState {
-        NEW, PROCEEDING, END, FAIL
+
+        NEW(0),
+        PROCEEDING(1),
+        END(2),
+        FAIL(3);
+
+        private final int state;
+
+        ReservationState(int state) {
+                this.state = state;
+        }
 }

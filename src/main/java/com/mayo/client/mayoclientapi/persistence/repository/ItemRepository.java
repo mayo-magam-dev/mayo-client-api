@@ -2,6 +2,7 @@ package com.mayo.client.mayoclientapi.persistence.repository;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
+import com.mayo.client.mayoclientapi.common.annotation.FirestoreTransactional;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistence.domain.Item;
@@ -18,6 +19,7 @@ import java.util.concurrent.ExecutionException;
 @Repository
 @Slf4j
 @RequiredArgsConstructor
+@FirestoreTransactional
 public class ItemRepository {
 
     private static final String COLLECTION_NAME = "items";
@@ -80,17 +82,28 @@ public class ItemRepository {
 
         DocumentReference storeDocumentId = firestore.collection("stores").document(storeId);
         CollectionReference itemsRef = firestore.collection("items");
-        Query query = itemsRef.whereEqualTo("store_ref", storeDocumentId).orderBy("sale_percent", Query.Direction.DESCENDING);
+        Query query = itemsRef.whereEqualTo("store_ref", storeDocumentId);
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
         QuerySnapshot querySnapshot = null;
 
         try {
-            querySnapshot = querySnapshotApiFuture.get();
+            List<QueryDocumentSnapshot> documents = querySnapshotApiFuture.get().getDocuments();
+
+            return documents.stream()
+                    .map(doc -> {
+                        Object value = doc.get("sale_percent");
+                        if (value instanceof Double) {
+                            return (Double) value;
+                        } else {
+                            return 0.0;
+                        }
+                    })
+                    .max(Double::compareTo)
+                    .orElse(0.0);
+
         } catch (InterruptedException | ExecutionException e) {
             throw new ApplicationException(ErrorStatus.toErrorStatus("스토어로 아이템을 가져오는 중 에러가 발생하였습니다.", 400, LocalDateTime.now()));
         }
-
-        return fromDocument(querySnapshot.getDocuments().get(0)).getSalePercent();
 
     }
 
@@ -122,9 +135,16 @@ public class ItemRepository {
             if (itemSnapshot.exists()) {
                 Integer itemQuantity = itemSnapshot.get("item_quantity", Integer.class);
 
-                if(itemQuantity != null && itemQuantity - count > 0) {
+                if(itemQuantity != null && itemQuantity - count >= 0) {
                     Integer updatedItemQuantity = itemQuantity - count;
                     docRef.update("item_quantity", updatedItemQuantity);
+                    if(updatedItemQuantity == 0) {
+                        docRef.update("item_on_sale", false);
+                    }
+                } else {
+                    throw new ApplicationException(
+                            ErrorStatus.toErrorStatus("아이템이 너무 많습니다.", 400, LocalDateTime.now())
+                    );
                 }
             }
         }
