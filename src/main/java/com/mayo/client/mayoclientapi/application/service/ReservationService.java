@@ -104,6 +104,11 @@ public class ReservationService {
 
         List<DocumentReference> cartRefList = cartRepository.findCartRefByUserRef(userRef);
         List<Cart> cartList = cartRepository.findCartsByUserRef(userRef);
+
+        if(cartRefList.isEmpty()) {
+            throw new ApplicationException(ErrorStatus.toErrorStatus("장바구니가 비어있습니다.", 400, LocalDateTime.now()));
+        }
+
         DocumentReference storeRef = cartList.get(0).getStoreRef();
         double totalPrice = 0;
         double totalSalePrice = 0;

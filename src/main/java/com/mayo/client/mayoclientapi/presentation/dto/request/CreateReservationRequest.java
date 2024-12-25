@@ -1,13 +1,16 @@
 package com.mayo.client.mayoclientapi.presentation.dto.request;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentReference;
+import com.mayo.client.mayoclientapi.common.serializer.FirestoreTimestampDeserializer;
 import com.mayo.client.mayoclientapi.persistence.domain.Reservation;
 import com.mayo.client.mayoclientapi.persistence.domain.type.ReservationState;
 
 import java.util.List;
 
 public record CreateReservationRequest(
+        @JsonDeserialize(using = FirestoreTimestampDeserializer.class)
         Timestamp pickupTime,
         Boolean reservationIsPlastic,
         String reservationRequest
@@ -18,7 +21,7 @@ public record CreateReservationRequest(
                 .pickupTime(pickupTime)
                 .reservationIsPlastics(reservationIsPlastic)
                 .reservationRequest(reservationRequest)
-                .reservationState(ReservationState.NEW.ordinal())
+                .reservationState(ReservationState.NEW.getState())
                 .storeRef(storeRef)
                 .totalPrice(totalPrice)
                 .userRef(userRef)
