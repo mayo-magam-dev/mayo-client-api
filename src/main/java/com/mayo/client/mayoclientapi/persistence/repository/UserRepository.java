@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.*;
+import com.mayo.client.mayoclientapi.common.annotation.FirestoreTransactional;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistence.domain.FCMToken;
@@ -19,6 +20,7 @@ import java.util.concurrent.ExecutionException;
 @Repository
 @Slf4j
 @RequiredArgsConstructor
+@FirestoreTransactional
 public class UserRepository {
 
     private static final String COLLECTION_NAME_FCM_TOKENS = "fcm_tokens";
