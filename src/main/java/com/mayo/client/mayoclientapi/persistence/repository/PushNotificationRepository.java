@@ -4,6 +4,7 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
+import com.mayo.client.mayoclientapi.common.annotation.FirestoreTransactional;
 import com.mayo.client.mayoclientapi.presentation.dto.request.CreateClientPushNotificationRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Slf4j
 @RequiredArgsConstructor
+@FirestoreTransactional
 public class PushNotificationRepository {
 
     private static final String COLLECTION_NAME = "push_notifications";

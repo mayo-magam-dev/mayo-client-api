@@ -2,6 +2,7 @@ package com.mayo.client.mayoclientapi.persistence.repository;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
+import com.mayo.client.mayoclientapi.common.annotation.FirestoreTransactional;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistence.domain.Reservation;
@@ -16,6 +17,7 @@ import java.util.concurrent.ExecutionException;
 @Repository
 @Slf4j
 @RequiredArgsConstructor
+@FirestoreTransactional
 public class ReservationRepository {
 
     private static final String USER_COLLECTION_NAME = "users";

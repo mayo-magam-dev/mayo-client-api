@@ -2,6 +2,7 @@ package com.mayo.client.mayoclientapi.persistence.repository;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
+import com.mayo.client.mayoclientapi.common.annotation.FirestoreTransactional;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistence.domain.Cart;
@@ -19,6 +20,7 @@ import java.util.concurrent.ExecutionException;
 @Repository
 @Slf4j
 @RequiredArgsConstructor
+@FirestoreTransactional
 public class CartRepository {
 
     private final String COLLECTION_NAME_CARTS = "carts";
