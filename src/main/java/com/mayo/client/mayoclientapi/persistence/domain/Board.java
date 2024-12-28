@@ -2,7 +2,7 @@ package com.mayo.client.mayoclientapi.persistence.domain;
 
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.annotation.DocumentId;
-import com.google.cloud.firestore.annotation.PropertyName;
+import com.google.firebase.database.PropertyName;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

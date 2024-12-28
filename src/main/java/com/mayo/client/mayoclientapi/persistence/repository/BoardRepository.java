@@ -28,7 +28,7 @@ public class BoardRepository {
         List<Board> boards = new ArrayList<>();
 
         CollectionReference boardRef = firestore.collection("board");
-        Query query = boardRef.whereEqualTo("category", BoardCategory.TERMSDETAIL.ordinal());
+        Query query = boardRef.whereEqualTo("category", BoardCategory.TERMSDETAIL.getState());
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
 
         QuerySnapshot querySnapshot = null;
@@ -40,8 +40,8 @@ public class BoardRepository {
         }
 
         for (QueryDocumentSnapshot boardDocument : querySnapshot.getDocuments()) {
-            Board Board = fromDocument(boardDocument);
-            boards.add(Board);
+            Board board = fromDocument(boardDocument);
+            boards.add(board);
         }
 
         return boards;
@@ -53,7 +53,7 @@ public class BoardRepository {
         List<Board> boards = new ArrayList<>();
 
         CollectionReference boardRef = firestore.collection("board");
-        Query query = boardRef.whereEqualTo("category", BoardCategory.NOTICE.ordinal());
+        Query query = boardRef.whereEqualTo("category", BoardCategory.NOTICE.getState());
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
         QuerySnapshot querySnapshot = null;
 
@@ -76,7 +76,7 @@ public class BoardRepository {
 
         CollectionReference boardRef = firestore.collection("board");
         Query query = boardRef
-                .whereEqualTo("category", BoardCategory.EVENT.ordinal())
+                .whereEqualTo("category", BoardCategory.EVENT.getState())
                 .orderBy("write_time", Query.Direction.DESCENDING);
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
         QuerySnapshot querySnapshot = null;
