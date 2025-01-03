@@ -5,9 +5,7 @@ import com.mayo.client.mayoclientapi.persistence.domain.User;
 import com.mayo.client.mayoclientapi.persistence.domain.type.GenderType;
 
 public record CreateUserRequest(
-        String uid,
         String email,
-        Timestamp createdTime,
         GenderType gender,
         String name,
         String displayName,
@@ -21,7 +19,7 @@ public record CreateUserRequest(
                 .uid(uid)
                 .userid(uid)
                 .email(email)
-                .createdTime(createdTime)
+                .createdTime(Timestamp.now())
                 .phoneNumber(phoneNumber)
                 .agreeMarketing(agreeMarketing)
                 .agreeTerms1(agreeTerms1)
