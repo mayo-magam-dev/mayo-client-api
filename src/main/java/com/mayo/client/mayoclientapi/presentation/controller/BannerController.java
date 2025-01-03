@@ -7,15 +7,19 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Tag(name = "배너 API", description = "배너 API")
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/banners")
 public class BannerController {
 
     private final BannerService bannerService;
@@ -26,7 +30,7 @@ public class BannerController {
             @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
             @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
     })
-    @GetMapping("/banners")
+    @GetMapping
     public ResponseEntity<List<ReadBannerResponse>> getBanners() {
         return ResponseEntity.ok(bannerService.getBanners());
     }
