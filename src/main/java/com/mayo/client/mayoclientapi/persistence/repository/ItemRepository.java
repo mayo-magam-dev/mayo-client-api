@@ -60,7 +60,8 @@ public class ItemRepository {
 
         DocumentReference storeDocumentId = firestore.collection("stores").document(storeId);
         CollectionReference itemsRef = firestore.collection("items");
-        Query query = itemsRef.whereEqualTo("store_ref", storeDocumentId);
+        Query query = itemsRef.whereEqualTo("store_ref", storeDocumentId)
+                .whereEqualTo("is_active", true);
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
         QuerySnapshot querySnapshot = null;
 
@@ -82,7 +83,8 @@ public class ItemRepository {
 
         DocumentReference storeDocumentId = firestore.collection("stores").document(storeId);
         CollectionReference itemsRef = firestore.collection("items");
-        Query query = itemsRef.whereEqualTo("store_ref", storeDocumentId);
+        Query query = itemsRef.whereEqualTo("store_ref", storeDocumentId)
+                .whereEqualTo("is_active", true);
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
         QuerySnapshot querySnapshot = null;
 
