@@ -27,6 +27,7 @@ public class StoreRepository {
         List<Store> list = new ArrayList<>();
         ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION_NAME)
                 .whereEqualTo("open_state", true)
+                .whereEqualTo("is_active", true)
                 .get();
 
         try {
@@ -60,6 +61,7 @@ public class StoreRepository {
         List<Store> list = new ArrayList<>();
         ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION_NAME)
                 .whereEqualTo("open_state", true)
+                .whereEqualTo("is_active", true)
                 .get();
 
         try {
@@ -94,7 +96,8 @@ public class StoreRepository {
     public List<Store> findAll() {
 
         List<Store> list = new ArrayList<>();
-        ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION_NAME).get();
+        ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION_NAME)
+                .whereEqualTo("is_active", true).get();
 
         try {
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
@@ -113,7 +116,8 @@ public class StoreRepository {
     public List<Store> findByCategory(Long category) {
 
         List<Store> list = new ArrayList<>();
-        ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION_NAME).get();
+        ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION_NAME)
+                .whereEqualTo("is_active", true).get();
 
         try {
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
