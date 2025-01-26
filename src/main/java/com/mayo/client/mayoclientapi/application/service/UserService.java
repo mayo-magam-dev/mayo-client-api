@@ -148,4 +148,14 @@ public class UserService {
 
         userRepository.updateUserEmail(userId, email);
     }
+
+    public void updateAgreeMarketing(String userId, Boolean agreeMarketing) {
+
+        userRepository.findByUserId(userId)
+                .orElseThrow(() -> new ApplicationException(
+                        ErrorStatus.toErrorStatus("해당하는 유저가 없습니다.", 404, LocalDateTime.now())
+                ));
+
+        userRepository.updateAgreeMarketing(userId, agreeMarketing);
+    }
 }

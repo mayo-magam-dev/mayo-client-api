@@ -141,4 +141,17 @@ public class UserController {
         userService.updateEmail(req.getAttribute("uid").toString(), request.email());
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "마케팅 수신동의 업데이트", description = "마케팅 수신동의를 업데이트합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "마케팅 수신동의을 업데이트합니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
+            @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
+    })
+    @Authenticated
+    @PutMapping("/agreeMarketing")
+    public ResponseEntity<Void> updateAgreeMarketing(HttpServletRequest req, @RequestBody UpdateAgreeMarketingRequest request) {
+        userService.updateAgreeMarketing(req.getAttribute("uid").toString(), request.agreeMarketing());
+        return ResponseEntity.noContent().build();
+    }
 }
