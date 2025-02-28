@@ -16,6 +16,7 @@ public class DateFormatDeserializer extends JsonDeserializer<Timestamp> {
 
     @Override
     public Timestamp deserialize(JsonParser parser, DeserializationContext context) throws IOException {
+
         String date = parser.getText();
 
         LocalDate localDate = LocalDate.parse(date, FORMATTER);
