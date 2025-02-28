@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 
 public class DateFormatDeserializer extends JsonDeserializer<Timestamp> {
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
     @Override
     public Timestamp deserialize(JsonParser parser, DeserializationContext context) throws IOException {
