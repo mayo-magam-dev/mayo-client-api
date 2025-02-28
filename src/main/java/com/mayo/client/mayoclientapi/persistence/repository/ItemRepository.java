@@ -61,7 +61,8 @@ public class ItemRepository {
         DocumentReference storeDocumentId = firestore.collection("stores").document(storeId);
         CollectionReference itemsRef = firestore.collection("items");
         Query query = itemsRef.whereEqualTo("store_ref", storeDocumentId)
-                .whereEqualTo("is_active", true);
+                .whereEqualTo("is_active", true)
+                .whereEqualTo("is_display", true);
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
         QuerySnapshot querySnapshot = null;
 
@@ -84,9 +85,9 @@ public class ItemRepository {
         DocumentReference storeDocumentId = firestore.collection("stores").document(storeId);
         CollectionReference itemsRef = firestore.collection("items");
         Query query = itemsRef.whereEqualTo("store_ref", storeDocumentId)
-                .whereEqualTo("is_active", true);
+                .whereEqualTo("is_active", true)
+                .whereEqualTo("is_display", true);
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
-        QuerySnapshot querySnapshot = null;
 
         try {
             List<QueryDocumentSnapshot> documents = querySnapshotApiFuture.get().getDocuments();
@@ -138,7 +139,7 @@ public class ItemRepository {
                 Integer itemQuantity = itemSnapshot.get("item_quantity", Integer.class);
 
                 if(itemQuantity != null && itemQuantity - count >= 0) {
-                    Integer updatedItemQuantity = itemQuantity - count;
+                    int updatedItemQuantity = itemQuantity - count;
                     docRef.update("item_quantity", updatedItemQuantity);
                     if(updatedItemQuantity == 0) {
                         docRef.update("item_on_sale", false);

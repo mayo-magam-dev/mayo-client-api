@@ -98,7 +98,7 @@ public class UserController {
     })
     @Authenticated
     @PutMapping("/favorite-store")
-    public ResponseEntity<Void> updatefavoriteStore(HttpServletRequest req, @RequestBody UpdateFavoriteStoreRequest request) {
+    public ResponseEntity<Void> updateFavoriteStore(HttpServletRequest req, @RequestBody UpdateFavoriteStoreRequest request) {
         userService.updateFavoriteStore(request, req.getAttribute("uid").toString());
         return ResponseEntity.noContent().build();
     }
