@@ -2,7 +2,7 @@ package com.mayo.client.mayoclientapi.presentation.dto.request;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.cloud.Timestamp;
-import com.mayo.client.mayoclientapi.common.serializer.FirestoreTimestampDeserializer;
+import com.mayo.client.mayoclientapi.common.serializer.DateFormatDeserializer;
 import com.mayo.client.mayoclientapi.persistence.domain.User;
 import com.mayo.client.mayoclientapi.persistence.domain.type.GenderType;
 
@@ -15,7 +15,7 @@ public record CreateUserRequest(
         Boolean agreeMarketing,
         Boolean agreeTerms1,
         Boolean agreeTerms2,
-        @JsonDeserialize(using = FirestoreTimestampDeserializer.class)
+        @JsonDeserialize(using = DateFormatDeserializer.class)
         Timestamp birthday
 ) {
     public User toEntity(String uid) {
