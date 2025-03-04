@@ -1,5 +1,6 @@
 package com.mayo.client.mayoclientapi.presentation.controller;
 
+import com.mayo.client.mayoclientapi.application.service.FCMService;
 import com.mayo.client.mayoclientapi.application.service.UserService;
 import com.mayo.client.mayoclientapi.common.annotation.Authenticated;
 import com.mayo.client.mayoclientapi.presentation.dto.request.*;
@@ -31,127 +32,140 @@ public class UserController {
     @Operation(summary = "유저 정보 조회", description = "유저 정보를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "전체 가게 조회", content = @Content(schema = @Schema(implementation = ReadUserResponse.class))),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
-            @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @Authenticated
     @GetMapping
-    public ResponseEntity<ReadUserResponse> getUser(HttpServletRequest req) {
-        return ResponseEntity.ok(userService.getUser(req.getAttribute("uid").toString()));
+    public ResponseEntity<ReadUserResponse> getUser(@RequestAttribute("uid") String uid) {
+        return ResponseEntity.ok(userService.getUser(uid));
     }
 
     @Operation(summary = "좋아요 표시한 가게 조회", description = "좋아요 표시한 가게를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "좋아요 표시한 가게 조회", content = @Content(schema = @Schema(implementation = List.class))),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
-            @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @Authenticated
     @GetMapping("/favorite-stores")
-    public ResponseEntity<List<ReadStoreResponse>> favoriteStores(HttpServletRequest req) {
-        return ResponseEntity.ok(userService.getUserFavoriteStores(req.getAttribute("uid").toString()));
+    public ResponseEntity<List<ReadStoreResponse>> favoriteStores(@RequestAttribute("uid") String uid) {
+        return ResponseEntity.ok(userService.getUserFavoriteStores(uid));
     }
 
     @Operation(summary = "알림설정 표시한 가게 조회", description = "알림설정 표시한 가게를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "알림설정 표시한 가게 조회", content = @Content(schema = @Schema(implementation = List.class))),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
-            @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @Authenticated
     @GetMapping("/notice-stores")
-    public ResponseEntity<List<ReadStoreResponse>> noticeStores(HttpServletRequest req) {
-        return ResponseEntity.ok(userService.getUserNoticeStores(req.getAttribute("uid").toString()));
+    public ResponseEntity<List<ReadStoreResponse>> noticeStores(@RequestAttribute("uid") String uid) {
+        return ResponseEntity.ok(userService.getUserNoticeStores(uid));
     }
 
     @Operation(summary = "유저 회원 가입", description = "유저 회원가입")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "회원 가입 성공", content = @Content(schema = @Schema(implementation = List.class))),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
-            @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @Authenticated
     @PostMapping
-    public ResponseEntity<Void> createUser(HttpServletRequest req, @RequestBody CreateUserRequest request) {
-        userService.createUser(request, req.getAttribute("uid").toString());
+    public ResponseEntity<Void> createUser(@RequestAttribute("uid") String uid, @RequestBody CreateUserRequest request) {
+        userService.createUser(request, uid);
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "알림 설정한 가게 업데이트", description = "알림 설정한 가게를 업데이트합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "알림 설정한 가게를 업데이트합니다."),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
-            @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @Authenticated
     @PutMapping("/notice-store")
-    public ResponseEntity<Void> updateNoticeStore(HttpServletRequest req, @RequestBody UpdateNoticeStoreRequest request) {
-        userService.updateNoticeStore(request, req.getAttribute("uid").toString());
+    public ResponseEntity<Void> updateNoticeStore(@RequestAttribute("uid") String uid, @RequestBody UpdateNoticeStoreRequest request) {
+        userService.updateNoticeStore(request, uid);
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "좋아요 표시한 가게 업데이트", description = "좋아요 표시한 가게를 업데이트합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "좋아요 표시한 가게를 업데이트합니다."),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
-            @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @Authenticated
     @PutMapping("/favorite-store")
-    public ResponseEntity<Void> updateFavoriteStore(HttpServletRequest req, @RequestBody UpdateFavoriteStoreRequest request) {
-        userService.updateFavoriteStore(request, req.getAttribute("uid").toString());
+    public ResponseEntity<Void> updateFavoriteStore(@RequestAttribute("uid") String uid, @RequestBody UpdateFavoriteStoreRequest request) {
+        userService.updateFavoriteStore(request, uid);
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "회원 탈퇴", description = "회원 탈퇴를 진행합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "회원 탈퇴 성공."),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
-            @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @Authenticated
     @DeleteMapping
-    public ResponseEntity<Void> deleteUser(HttpServletRequest req) {
-        userService.deleteUser(req.getAttribute("uid").toString());
+    public ResponseEntity<Void> deleteUser(@RequestAttribute("uid") String uid) {
+        userService.deleteUser(uid);
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "닉네임 변경", description = "닉네임을 업데이트합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "닉네임을 업데이트합니다."),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
-            @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @Authenticated
     @PutMapping("/nickname")
-    public ResponseEntity<Void> updateNickName(HttpServletRequest req, @RequestBody UpdateNickNameRequest request) {
-        userService.updateNickName(req.getAttribute("uid").toString(), request.nickName());
+    public ResponseEntity<Void> updateNickName(@RequestAttribute("uid") String uid, @RequestBody UpdateNickNameRequest request) {
+        userService.updateNickName(uid, request.nickName());
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "이메일 업데이트", description = "이메일을 업데이트합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "이메일을 업데이트합니다."),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
-            @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @Authenticated
     @PutMapping("/email")
-    public ResponseEntity<Void> updateEmail(HttpServletRequest req, @RequestBody UpdateEmailRequest request) {
-        userService.updateEmail(req.getAttribute("uid").toString(), request.email());
+    public ResponseEntity<Void> updateEmail(@RequestAttribute("uid") String uid, @RequestBody UpdateEmailRequest request) {
+        userService.updateEmail(uid, request.email());
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "마케팅 수신동의 업데이트", description = "마케팅 수신동의를 업데이트합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "마케팅 수신동의을 업데이트합니다."),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
-            @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @Authenticated
     @PutMapping("/agreeMarketing")
-    public ResponseEntity<Void> updateAgreeMarketing(HttpServletRequest req, @RequestBody UpdateAgreeMarketingRequest request) {
-        userService.updateAgreeMarketing(req.getAttribute("uid").toString(), request.agreeMarketing());
+    public ResponseEntity<Void> updateAgreeMarketing(@RequestAttribute("uid") String uid, @RequestBody UpdateAgreeMarketingRequest request) {
+        userService.updateAgreeMarketing(uid, request.agreeMarketing());
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "fcm token 생성", description = "fcm token을 생성합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "fcm token을 생성합니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
+    @Authenticated
+    @PostMapping("/fcm")
+    public ResponseEntity<Void> createFcmToken(@RequestAttribute("uid") String uid, @RequestBody CreateFCMTokenRequest request) {
+        userService.createFCMToken(uid, request.fcmToken());
         return ResponseEntity.noContent().build();
     }
 }
