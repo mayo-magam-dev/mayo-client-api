@@ -158,4 +158,8 @@ public class UserService {
 
         userRepository.updateAgreeMarketing(userId, agreeMarketing);
     }
+
+    public void createFCMToken(String userId, String fcmToken) {
+        userRepository.createFCMTokenById(userId, fcmToken);
+    }
 }
