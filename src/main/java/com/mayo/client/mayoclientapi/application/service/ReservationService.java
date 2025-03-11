@@ -4,10 +4,7 @@ import com.google.cloud.firestore.DocumentReference;
 import com.mayo.client.mayoclientapi.common.annotation.FirestoreTransactional;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
-import com.mayo.client.mayoclientapi.persistence.domain.Cart;
-import com.mayo.client.mayoclientapi.persistence.domain.Item;
-import com.mayo.client.mayoclientapi.persistence.domain.Reservation;
-import com.mayo.client.mayoclientapi.persistence.domain.Store;
+import com.mayo.client.mayoclientapi.persistence.domain.*;
 import com.mayo.client.mayoclientapi.persistence.repository.*;
 import com.mayo.client.mayoclientapi.presentation.dto.request.CreateReservationRequest;
 import com.mayo.client.mayoclientapi.presentation.dto.response.*;
@@ -63,12 +60,19 @@ public class ReservationService {
         return responseList;
     }
 
-    public ReadReservationDetailResponse getReservationDetailById(String reservationId) {
+    public ReadReservationDetailResponse getReservationDetailById(String uid, String reservationId) {
+
 
         Reservation reservation = reservationRepository.findByReservationId(reservationId)
                 .orElseThrow(() -> new ApplicationException(
                         ErrorStatus.toErrorStatus("해당하는 예약이 없습니다.", 404, LocalDateTime.now())
                 ));
+
+        if(!reservation.getUserRef().getId().equals(uid)) {
+            throw new ApplicationException(
+                    ErrorStatus.toErrorStatus("권한이 없습니다.", 401, LocalDateTime.now())
+            );
+        }
 
         Store store = storeRepository.findByDocRef(reservation.getStoreRef())
                 .orElseThrow(() -> new ApplicationException(
