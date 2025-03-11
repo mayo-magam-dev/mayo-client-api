@@ -9,6 +9,7 @@ import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistence.domain.FCMToken;
 import com.mayo.client.mayoclientapi.persistence.domain.User;
+import com.mayo.client.mayoclientapi.persistence.domain.type.DeviceType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -164,7 +165,7 @@ public class UserRepository {
         return fcmTokens;
     }
 
-    public void createFCMTokenById(String userId, String token) {
+    public void createFCMTokenById(String userId, String token, DeviceType deviceType) {
 
         DocumentReference userRef = firestore.collection("users").document(userId);
 
@@ -195,7 +196,7 @@ public class UserRepository {
             FCMToken fcmToken = FCMToken.builder()
                     .token(token)
                     .createdAt(Timestamp.now().toString())
-                    .deviceType("web")
+                    .deviceType(deviceType.toString())
                     .build();
 
             Map<String, Object> jsonFCM = objectMapper.convertValue(fcmToken, Map.class);

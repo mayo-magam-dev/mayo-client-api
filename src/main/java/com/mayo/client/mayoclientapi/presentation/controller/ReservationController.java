@@ -37,8 +37,8 @@ public class ReservationController {
     })
     @Authenticated
     @GetMapping
-    public ResponseEntity<List<ReadReservationResponse>> getReservationsByUserId(HttpServletRequest request) {
-        return ResponseEntity.ok(reservationService.getReservationsByUserId(request.getAttribute("uid").toString()));
+    public ResponseEntity<List<ReadReservationResponse>> getReservationsByUserId(@RequestAttribute("uid") String uid) {
+        return ResponseEntity.ok(reservationService.getReservationsByUserId(uid));
     }
 
     @Operation(summary = "주문 내역의 상세정보를 가져옵니다.", description = "주문 내역의 상세정보를 가져옵니다.")
@@ -49,20 +49,20 @@ public class ReservationController {
     })
     @Authenticated
     @GetMapping("/{reservationId}")
-    public ResponseEntity<ReadReservationDetailResponse> getReservationById(@PathVariable("reservationId") String reservationId) {
-        return ResponseEntity.ok(reservationService.getReservationDetailById(reservationId));
+    public ResponseEntity<ReadReservationDetailResponse> getReservationById(@RequestAttribute("uid") String uid, @PathVariable("reservationId") String reservationId) {
+        return ResponseEntity.ok(reservationService.getReservationDetailById(uid, reservationId));
     }
 
     @Operation(summary = "유저의 장바구니에 있는 정보로 예약을 진행합니다.", description = "유저의 장바구니에 있는 정보로 예약을 진행합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "예약 성공"),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
-            @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @Authenticated
     @PostMapping
-    public ResponseEntity<Void> createReservation(HttpServletRequest req, @RequestBody CreateReservationRequest request) {
-        reservationService.createReservation(request, req.getAttribute("uid").toString());
+    public ResponseEntity<Void> createReservation(@RequestAttribute("uid") String uid, @RequestBody CreateReservationRequest request) {
+        reservationService.createReservation(request, uid);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

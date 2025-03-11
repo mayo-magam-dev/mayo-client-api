@@ -31,8 +31,8 @@ public class StoreController {
     @Operation(summary = "가게 전체 조회", description = "전체 가게를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "전체 가게 조회", content = @Content(schema = @Schema(implementation = List.class))),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
-            @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @GetMapping
     public ResponseEntity<List<ReadSimpleStoreResponse>> getAllStore() {
@@ -42,8 +42,8 @@ public class StoreController {
     @Operation(summary = "할인중인 가게 조회", description = "할인 중인 가게를 모두 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "할인 중 가게 조회 성공", content = @Content(schema = @Schema(implementation = List.class))),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
-            @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @GetMapping("/on-sale")
     public ResponseEntity<List<ReadSimpleStoreResponse>> getAllSales() {
@@ -53,8 +53,8 @@ public class StoreController {
     @Operation(summary = "카테고리 별로 가게 조회", description = "카테고리로 가게를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "카테고리로 가게 조회 성공", content = @Content(schema = @Schema(implementation = List.class))),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
-            @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @GetMapping("/category/{storeCategory}")
     public ResponseEntity<List<ReadSimpleStoreResponse>> getAllCategories(@PathVariable Long storeCategory) {
@@ -64,20 +64,20 @@ public class StoreController {
     @Operation(summary = "최근 주문한 가게 조회", description = "최근 주문한 가게를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "최근 주문 가게 조회 성공", content = @Content(schema = @Schema(implementation = ReadRecentlyStoreResponse.class))),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
-            @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @Authenticated
     @GetMapping("/recently")
-    public ResponseEntity<ReadRecentlyStoreResponse> getRecentlyStore(HttpServletRequest request) {
-        return ResponseEntity.ok(storeService.getRecentlyUserId(request.getAttribute("uid").toString()));
+    public ResponseEntity<ReadRecentlyStoreResponse> getRecentlyStore(@RequestAttribute("uid") String uid) {
+        return ResponseEntity.ok(storeService.getRecentlyUserId(uid));
     }
 
     @Operation(summary = "가게 상세정보 조회", description = "가게 상세정보를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "가게 상세 정보 성공", content = @Content(schema = @Schema(implementation = List.class))),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
-            @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @GetMapping("/detail/{storeId}")
     public ResponseEntity<ReadStoreResponse> getStoreDetail(@PathVariable String storeId) {
@@ -87,8 +87,8 @@ public class StoreController {
     @Operation(summary = "3개의 할인중인 랜덤 가게를 조회합니다.", description = "3개의 할인중인 랜덤 가게를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "할인중 랜덤 조회 성공", content = @Content(schema = @Schema(implementation = List.class))),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
-            @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @GetMapping("/random-open-store")
     public ResponseEntity<List<ReadSimpleStoreResponse>> getRandomOpenStore() {
