@@ -165,7 +165,7 @@ public class UserController {
     @Authenticated
     @PostMapping("/fcm")
     public ResponseEntity<Void> createFcmToken(@RequestAttribute("uid") String uid, @RequestBody CreateFCMTokenRequest request) {
-        userService.createFCMToken(uid, request.fcmToken());
+        userService.createFCMToken(uid, request.fcmToken(), request.deviceType());
         return ResponseEntity.noContent().build();
     }
 }
