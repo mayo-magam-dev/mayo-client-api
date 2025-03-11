@@ -36,9 +36,8 @@ public class CartController {
     })
     @Authenticated
     @GetMapping
-    public ResponseEntity<List<ReadCartResponse>> getCartsByUserId(HttpServletRequest req) {
-        String userId = req.getParameter("uid");
-        return ResponseEntity.ok(cartService.getCartsByUserId(userId));
+    public ResponseEntity<List<ReadCartResponse>> getCartsByUserId(@RequestAttribute("uid") String uid) {
+        return ResponseEntity.ok(cartService.getCartsByUserId(uid));
     }
 
     @Operation(summary = "장바구니를 생성합니다.", description = "장바구니를 생성합니다.")
@@ -49,9 +48,8 @@ public class CartController {
     })
     @Authenticated
     @PostMapping
-    public ResponseEntity<Void> createCart(HttpServletRequest req, @RequestBody CreateCartRequest request) {
-        String userId = req.getParameter("uid");
-        cartService.createCart(request, userId);
+    public ResponseEntity<Void> createCart(@RequestAttribute("uid") String uid, @RequestBody CreateCartRequest request) {
+        cartService.createCart(request, uid);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

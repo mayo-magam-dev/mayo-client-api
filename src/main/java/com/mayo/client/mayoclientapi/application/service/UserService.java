@@ -6,6 +6,7 @@ import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistence.domain.Store;
 import com.mayo.client.mayoclientapi.persistence.domain.User;
+import com.mayo.client.mayoclientapi.persistence.domain.type.DeviceType;
 import com.mayo.client.mayoclientapi.persistence.repository.StoreRepository;
 import com.mayo.client.mayoclientapi.persistence.repository.UserRepository;
 import com.mayo.client.mayoclientapi.presentation.dto.request.CreateUserRequest;
@@ -159,7 +160,7 @@ public class UserService {
         userRepository.updateAgreeMarketing(userId, agreeMarketing);
     }
 
-    public void createFCMToken(String userId, String fcmToken) {
-        userRepository.createFCMTokenById(userId, fcmToken);
+    public void createFCMToken(String userId, String fcmToken, DeviceType deviceType) {
+        userRepository.createFCMTokenById(userId, fcmToken, deviceType);
     }
 }
