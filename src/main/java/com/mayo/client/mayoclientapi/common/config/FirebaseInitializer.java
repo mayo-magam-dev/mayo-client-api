@@ -36,12 +36,16 @@ public class FirebaseInitializer {
             FileCopyUtils.copy(inputStream.readAllBytes(), file);
             FileInputStream firebaseAccount = new FileInputStream(file);
             FirebaseOptions.Builder optionBuilder = FirebaseOptions.builder();
-            FirebaseOptions options = optionBuilder
-                    .setCredentials(GoogleCredentials.fromStream(firebaseAccount))
-                    .setDatabaseUrl(DATABASE_URL)
-                    .build();
 
-            FirebaseApp.initializeApp(options);
+            if(FirebaseApp.getApps().isEmpty()) {
+                FirebaseOptions options = optionBuilder
+                        .setCredentials(GoogleCredentials.fromStream(firebaseAccount))
+                        .setDatabaseUrl(DATABASE_URL)
+                        .build();
+
+                FirebaseApp.initializeApp(options);
+            }
+
         } catch (Exception e) {
             throw new ApplicationException(ErrorStatus.toErrorStatus("firebase 연결 중 오류 발생", 400, LocalDateTime.now()));
         }

@@ -77,6 +77,8 @@ public class ItemRepository {
             items.add(item);
         }
 
+        items.sort(Comparator.comparing(Item::getItemName));
+
         return items;
     }
 
