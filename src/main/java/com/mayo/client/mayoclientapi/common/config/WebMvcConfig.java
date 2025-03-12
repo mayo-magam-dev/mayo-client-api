@@ -1,6 +1,7 @@
 package com.mayo.client.mayoclientapi.common.config;
 
 import com.mayo.client.mayoclientapi.common.interceptor.AuthenticationInterceptor;
+import com.mayo.client.mayoclientapi.common.interceptor.LogInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.*;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.*;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final AuthenticationInterceptor authenticationInterceptor;
+    private final LogInterceptor logInterceptor;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -24,16 +26,19 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**") // 모든 엔드포인트에 적용
-                .allowedOrigins("**") // 허용할 도메인
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
+        registry.addMapping("/**")
+                .allowedOrigins("**")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
-                .allowCredentials(true); // 쿠키 허용 여부
+                .allowCredentials(true);
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authenticationInterceptor)
+                .addPathPatterns("/**");
+
+        registry.addInterceptor(logInterceptor)
                 .addPathPatterns("/**");
     }
 
