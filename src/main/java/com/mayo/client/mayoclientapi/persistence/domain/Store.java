@@ -30,6 +30,9 @@ public class Store {
     @PropertyName("store_image")
     private String storeImage;
 
+    @PropertyName("store_mainImage")
+    private String storeMainImage;
+
     @PropertyName("open_time")
     private String openTime;
 
@@ -67,12 +70,13 @@ public class Store {
     private Long storeSellingType;
 
     @Builder
-    public Store(String id, String storeName, Boolean openState, String address, String storeImage, String openTime, String closeTime, String saleStart, String saleEnd, String storeDescription, String storeNumber, String storeMapUrl, String originInfo, String additionalComment, List<Integer> openDayOfWeek, Long storeCategory, Long storeSellingType) {
+    public Store(String id, String storeName, Boolean openState, String address, String storeImage, String storeMainImage, String openTime, String closeTime, String saleStart, String saleEnd, String storeDescription, String storeNumber, String storeMapUrl, String originInfo, String additionalComment, List<Integer> openDayOfWeek, Long storeCategory, Long storeSellingType) {
         this.id = id;
         this.storeName = storeName;
         this.openState = openState;
         this.address = address;
         this.storeImage = storeImage;
+        this.storeMainImage = storeMainImage;
         this.openTime = openTime;
         this.closeTime = closeTime;
         this.saleStart = saleStart;

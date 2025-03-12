@@ -9,7 +9,8 @@ public record ReadRecentlyStoreResponse(
         String storeName,
         Boolean openState,
         Long storeSellingType,
-        String address
+        String address,
+        String mainImage
 ) {
     public static ReadRecentlyStoreResponse from(Store store) {
         return ReadRecentlyStoreResponse.builder()
@@ -18,6 +19,7 @@ public record ReadRecentlyStoreResponse(
                 .storeName(store.getStoreName())
                 .openState(store.getOpenState())
                 .address(store.getAddress())
+                .mainImage(store.getStoreMainImage())
                 .build();
     }
 }

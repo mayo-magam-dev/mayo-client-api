@@ -20,7 +20,8 @@ public record ReadStoreResponse(
         String originInfo,
         String additionalComment,
         Long storeCategory,
-        Long storeSellingType
+        Long storeSellingType,
+        String mainImage
 ) {
     public static ReadStoreResponse from(Store store) {
         return ReadStoreResponse.builder()
@@ -40,6 +41,7 @@ public record ReadStoreResponse(
                 .additionalComment(store.getAdditionalComment())
                 .storeCategory(store.getStoreCategory())
                 .storeSellingType(store.getStoreSellingType())
+                .mainImage(store.getStoreMainImage())
                 .build();
     }
 }
