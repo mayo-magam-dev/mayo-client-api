@@ -7,7 +7,6 @@ import com.google.cloud.firestore.QuerySnapshot;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistence.domain.Banner;
-import com.mayo.client.mayoclientapi.persistence.domain.Board;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -25,7 +24,8 @@ public class BannerRepository {
 
     public List<Banner> getBanners() {
 
-        Query query = firestore.collection(COLLECTION_NAME).whereEqualTo("is_active", true);
+        Query query = firestore.collection(COLLECTION_NAME)
+                .whereEqualTo("is_active", true);
         List<QueryDocumentSnapshot> documents = new ArrayList<>();
         List<Banner> bannerList = new ArrayList<>();
 

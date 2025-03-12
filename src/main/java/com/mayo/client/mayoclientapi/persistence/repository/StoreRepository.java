@@ -37,8 +37,10 @@ public class StoreRepository {
                 list.add(fromDocument(document));
             }
 
+            list.sort(Comparator.comparing(Store::getStoreName));
+
         } catch (InterruptedException | ExecutionException e) {
-            throw new ApplicationException(ErrorStatus.toErrorStatus("알 수 없는 문제가 발생하였습니다.", 500 ,LocalDateTime.now()));
+            throw new ApplicationException(ErrorStatus.toErrorStatus("알 수 없는 문제가 발생하였습니다.", 500, LocalDateTime.now()));
         }
 
         return list;
@@ -49,11 +51,12 @@ public class StoreRepository {
         ApiFuture<DocumentSnapshot> future = firestore.collection(COLLECTION_NAME).document(storeId).get();
 
         try {
-           return Optional.ofNullable(future.get().getReference());
+           return Optional.of(future.get().getReference());
         } catch (InterruptedException | ExecutionException e) {
+            throw new ApplicationException(
+                    ErrorStatus.toErrorStatus("알 수 없는 문제가 발생하였습니다.", 500, LocalDateTime.now())
+            );
         }
-
-        return Optional.empty();
     }
 
     public List<Store> findRandomOpenStores() {
@@ -106,6 +109,8 @@ public class StoreRepository {
                 list.add(fromDocument(document));
             }
 
+            list.sort(Comparator.comparing(Store::getStoreName));
+
         } catch (InterruptedException | ExecutionException e) {
             throw new ApplicationException(ErrorStatus.toErrorStatus("알 수 없는 문제가 발생하였습니다.", 500 ,LocalDateTime.now()));
         }
@@ -128,6 +133,9 @@ public class StoreRepository {
                     list.add(store);
                 }
             }
+
+            list.sort(Comparator.comparing(Store::getStoreName));
+
         } catch (ExecutionException | InterruptedException e) {
             throw new ApplicationException(ErrorStatus.toErrorStatus("알 수 없는 문제가 발생하였습니다.", 500 ,LocalDateTime.now()));
         }
@@ -142,15 +150,10 @@ public class StoreRepository {
 
         try {
             document = future.get();
+            return Optional.of(fromDocument(document));
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
-
-        if(document.exists()) {
-            return Optional.ofNullable(fromDocument(document));
-        }
-
-        return Optional.empty();
     }
 
     private List<Store> getRandomStores(List<Store> stores, int n) {
