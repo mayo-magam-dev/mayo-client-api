@@ -11,7 +11,7 @@ public record ReadSimpleStoreResponse(
         Long storeSellingType,
         String address,
         Double maxSalePercent,
-        String mainImage
+        String storeImage
 ) {
     public static ReadSimpleStoreResponse from(Store store, Double maxSalePercent) {
         return ReadSimpleStoreResponse.builder()
@@ -21,7 +21,7 @@ public record ReadSimpleStoreResponse(
                 .openState(store.getOpenState())
                 .address(store.getAddress())
                 .maxSalePercent(maxSalePercent)
-                .mainImage(store.getStoreMainImage())
+                .storeImage(store.getStoreImage())
                 .build();
     }
 }
