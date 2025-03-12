@@ -10,7 +10,8 @@ public record ReadSimpleStoreResponse(
         Boolean openState,
         Long storeSellingType,
         String address,
-        Double maxSalePercent
+        Double maxSalePercent,
+        String mainImage
 ) {
     public static ReadSimpleStoreResponse from(Store store, Double maxSalePercent) {
         return ReadSimpleStoreResponse.builder()
@@ -20,6 +21,7 @@ public record ReadSimpleStoreResponse(
                 .openState(store.getOpenState())
                 .address(store.getAddress())
                 .maxSalePercent(maxSalePercent)
+                .mainImage(store.getStoreMainImage())
                 .build();
     }
 }

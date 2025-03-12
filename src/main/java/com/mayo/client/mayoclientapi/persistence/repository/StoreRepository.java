@@ -189,6 +189,7 @@ public class StoreRepository {
                 .additionalComment(document.getString("additional_comment"))
                 .storeSellingType(document.getLong("store_sellingType"))
                 .storeCategory((document.getLong("store_category")))
+                .storeMainImage(document.getString("store_mainImage"))
                 .build();
     }
 }
