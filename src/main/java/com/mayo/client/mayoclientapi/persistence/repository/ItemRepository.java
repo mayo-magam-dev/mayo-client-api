@@ -99,6 +99,8 @@ public class ItemRepository {
                         Object value = doc.get("sale_percent");
                         if (value instanceof Double) {
                             return (Double) value;
+                        } else if (value instanceof Long) {
+                            return ((Long) value).doubleValue();
                         } else {
                             return 0.0;
                         }

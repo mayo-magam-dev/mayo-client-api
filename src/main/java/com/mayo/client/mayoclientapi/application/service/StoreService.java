@@ -35,7 +35,6 @@ public class StoreService {
 
         for(Store store : stores) {
             Double maxSalePercent = itemRepository.findMaxPercentItemByStoreId(store.getId());
-            log.info("store = {}, maxSalePercent = {}", store.getStoreName(), maxSalePercent);
             list.add(ReadSimpleStoreResponse.from(store, maxSalePercent));
         }
 
