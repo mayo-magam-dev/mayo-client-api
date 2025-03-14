@@ -1,4 +1,4 @@
-name: Java CI with Gradle
+name: Java CI with Docker
 
 on:
   pull_request:
@@ -46,7 +46,7 @@ jobs:
           check_name: 'Gradle Test Results'
           junit_files: build/test-results/test/**/*.xml
 
-      - name: Upload JAR to Remote Server
+      - name: Upload JAR & Dockerfile to Remote Server
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           REMOTE_USER: ${{ secrets.SSH_USER }}
@@ -58,3 +58,15 @@ jobs:
           chmod 400 ~/.ssh/github_rsa
           ssh-keyscan ${REMOTE_HOST} >> ~/.ssh/known_hosts
           scp -i ~/.ssh/github_rsa -o StrictHostKeyChecking=no build/libs/*.jar ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_DIR}
+          scp -i ~/.ssh/github_rsa -o StrictHostKeyChecking=no Dockerfile ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_DIR}
+
+      - name: Build Docker Image on Remote Server
+        env:
+          REMOTE_USER: ${{ secrets.SSH_USER }}
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_DIR: ${{ secrets.REMOTE_DIR }}
+        run: |
+          ssh -i ~/.ssh/github_rsa -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} "
+            cd ${REMOTE_DIR} &&
+            docker build -t mayo-client .
+          "

@@ -1,4 +1,4 @@
-name: Java CD with Gradle
+name: Java CD with Docker
 
 on:
   push:
@@ -21,19 +21,22 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
-      - name: Deploy JAR on Remote Server
+      - name: Run Docker Container on Remote Server
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           REMOTE_USER: ${{ secrets.SSH_USER }}
           REMOTE_HOST: ${{ secrets.SSH_HOST }}
           REMOTE_DIR: ${{ secrets.REMOTE_DIR }}
+          APP_PORT: 8080
         run: |
                mkdir -p ~/.ssh
                echo "${SSH_PRIVATE_KEY}" > ~/.ssh/github_rsa
                chmod 400 ~/.ssh/github_rsa
                ssh-keyscan ${REMOTE_HOST} >> ~/.ssh/known_hosts
                ssh -i ~/.ssh/github_rsa -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} << "EOF"
-               ps aux | grep mayo-client-api-0.0.1-SNAPSHOT.jar | grep -v grep | awk '{print $2}' | xargs kill -9
                cd mayo
-               nohup java -jar mayo-client-api-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &
+               docker stop mayo-client || true && docker rm mayo-client || true &&
+               docker run --network host -d --name mayo-client -p ${APP_PORT}:${APP_PORT} mayo-client
+               sleep 10
+               docker image prune -a -f
                EOF
