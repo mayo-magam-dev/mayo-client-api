@@ -12,6 +12,7 @@ import com.mayo.client.mayoclientapi.persistence.repository.ItemRepository;
 import com.mayo.client.mayoclientapi.persistence.repository.StoreRepository;
 import com.mayo.client.mayoclientapi.persistence.repository.UserRepository;
 import com.mayo.client.mayoclientapi.presentation.dto.request.CreateCartRequest;
+import com.mayo.client.mayoclientapi.presentation.dto.request.UpdateCartQuantityRequest;
 import com.mayo.client.mayoclientapi.presentation.dto.response.ReadCartResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +33,7 @@ public class CartService {
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
 
-    public void createCart(CreateCartRequest request, String userId) {
+    public ReadCartResponse createCart(CreateCartRequest request, String userId) {
 
         List<ReadCartResponse> cartResponseList = getCartsByUserId(userId);
 
@@ -64,12 +65,19 @@ public class CartService {
 
         DocumentReference storeRef = item.getStoreRef();
 
+        Store store = storeRepository.findByDocRef(storeRef)
+                .orElseThrow(() -> new ApplicationException(
+                        ErrorStatus.toErrorStatus("해당하는 가게가 없습니다.", 404, LocalDateTime.now())
+                ));
+
         DocumentReference itemRef = itemRepository.findDocRefById(request.itemId())
                 .orElseThrow(() -> new ApplicationException(
                         ErrorStatus.toErrorStatus("해당하는 아이템이 없습니다.", 404, LocalDateTime.now())
                 ));
 
-        cartRepository.save(request.toEntity(itemRef, storeRef, userRef, subtotal));
+        Cart newCart = cartRepository.save(request.toEntity(itemRef, storeRef, userRef, subtotal));
+
+        return ReadCartResponse.from(newCart, item, store);
     }
 
     public List<ReadCartResponse> getCartsByUserId(String userId) {
@@ -99,5 +107,25 @@ public class CartService {
         }
 
         return responseList;
+    }
+
+    public void deleteById(String userId, String cartId) {
+
+        Cart cart = cartRepository.findCartById(cartId)
+                .orElseThrow(() -> new ApplicationException(
+                        ErrorStatus.toErrorStatus("해당하는 카트가 없습니다.", 404, LocalDateTime.now())
+                ));
+
+        if(!cart.getUserRef().getId().equals(userId)) {
+            throw new ApplicationException(
+                    ErrorStatus.toErrorStatus("권한이 없는 사용자입니다.", 401, LocalDateTime.now())
+            );
+        }
+
+        cartRepository.deleteById(cartId);
+    }
+
+    public void updateCartQuantity(UpdateCartQuantityRequest request) {
+        cartRepository.updateCartQuantity(request);
     }
 }

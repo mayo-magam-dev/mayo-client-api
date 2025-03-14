@@ -7,6 +7,7 @@ import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistence.domain.Cart;
 import com.mayo.client.mayoclientapi.persistence.domain.Reservation;
+import com.mayo.client.mayoclientapi.presentation.dto.request.UpdateCartQuantityRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -26,8 +27,16 @@ public class CartRepository {
     private final String COLLECTION_NAME_CARTS = "carts";
     private final Firestore firestore;
 
-    public void save(Cart cart) {
-        firestore.collection(COLLECTION_NAME_CARTS).add(cart.toMap());
+    public Cart save(Cart cart) {
+        ApiFuture<DocumentReference> future = firestore.collection(COLLECTION_NAME_CARTS).add(cart.toMap());
+
+        try {
+            return fromDocument(future.get().get().get());
+        } catch (InterruptedException | ExecutionException e) {
+            throw new ApplicationException(
+                    ErrorStatus.toErrorStatus("알 수 없는 오류가 발생하였습니다.", 500, LocalDateTime.now())
+            );
+        }
     }
 
     public List<Cart> findCartsByUserRef(DocumentReference userRef) {
@@ -111,6 +120,10 @@ public class CartRepository {
         return Optional.empty();
     }
 
+    public void deleteById(String cartId) {
+        firestore.collection("carts").document(cartId).delete();
+    }
+
     public void updateCartIsActiveFalse(String cartId) {
 
         try {
@@ -121,6 +134,21 @@ public class CartRepository {
                     ErrorStatus.toErrorStatus("firebase 통신 중 오류가 발생하였습니다.", 500, LocalDateTime.now() )
             );
         }
+    }
+
+    public void updateCartQuantity(UpdateCartQuantityRequest request) {
+
+        DocumentReference cartDoc = null;
+
+        try {
+            cartDoc = firestore.collection("carts").document(request.cartId()).get().get().getReference();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new ApplicationException(
+                    ErrorStatus.toErrorStatus("firebase 통신 중 오류가 발생하였습니다.", 500, LocalDateTime.now() )
+            );
+        }
+
+        cartDoc.update("itemCount", request.itemQuantity());
     }
 
     public Optional<DocumentReference> findFirstCartsByReservation(Reservation reservation) {
