@@ -29,14 +29,14 @@ jobs:
           REMOTE_DIR: ${{ secrets.REMOTE_DIR }}
           APP_PORT: 8080
         run: |
-               mkdir -p ~/.ssh
-               echo "${SSH_PRIVATE_KEY}" > ~/.ssh/github_rsa
-               chmod 400 ~/.ssh/github_rsa
-               ssh-keyscan ${REMOTE_HOST} >> ~/.ssh/known_hosts
-               ssh -i ~/.ssh/github_rsa -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} << "EOF"
-               cd mayo
-               docker stop mayo-client || true && docker rm mayo-client || true &&
-               docker run --network host -d --name mayo-client -p ${APP_PORT}:${APP_PORT} mayo-client
-               sleep 10
-               docker image prune -a -f
-               EOF
+          mkdir -p ~/.ssh
+          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/github_rsa
+          chmod 400 ~/.ssh/github_rsa
+          ssh-keyscan ${REMOTE_HOST} >> ~/.ssh/known_hosts
+          ssh -i ~/.ssh/github_rsa -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} "
+            cd ${REMOTE_DIR} &&
+            docker stop mayo-client || true && docker rm mayo-client || true &&
+            docker run --network host -d --name mayo-client -p ${APP_PORT}:${APP_PORT} mayo-client
+            sleep 10
+            docker image prune -a -f
+          "
