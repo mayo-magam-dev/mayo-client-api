@@ -1,6 +1,7 @@
 package com.mayo.client.mayoclientapi.presentation.dto.response;
 
 import com.mayo.client.mayoclientapi.persistence.domain.Item;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 @Builder
@@ -12,9 +13,11 @@ public record ReadItemResponse(
         Double salePercent,
         Integer itemQuantity,
         Boolean itemOnSale,
+        @Schema(nullable = true)
         String itemImage,
         Double salePrice,
         Integer cookingTime,
+        @Schema(nullable = true)
         String additionalInformation
 ) {
     public static ReadItemResponse from(Item item) {

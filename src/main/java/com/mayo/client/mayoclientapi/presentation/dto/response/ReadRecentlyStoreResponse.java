@@ -1,6 +1,7 @@
 package com.mayo.client.mayoclientapi.presentation.dto.response;
 
 import com.mayo.client.mayoclientapi.persistence.domain.Store;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 @Builder
@@ -10,6 +11,7 @@ public record ReadRecentlyStoreResponse(
         Boolean openState,
         Long storeSellingType,
         String address,
+        @Schema(nullable = true)
         String mainImage
 ) {
     public static ReadRecentlyStoreResponse from(Store store) {
