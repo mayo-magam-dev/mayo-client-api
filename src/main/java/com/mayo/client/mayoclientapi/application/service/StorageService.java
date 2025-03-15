@@ -51,4 +51,9 @@ public class StorageService {
 
         bucket.get(key).delete();
     }
+
+    public boolean isFirebaseStorageUrl(String url) {
+        String storageUrlPrefix = "https://storage.googleapis.com/" + firebaseStorageUrl + "/";
+        return url.startsWith(storageUrlPrefix);
+    }
 }
