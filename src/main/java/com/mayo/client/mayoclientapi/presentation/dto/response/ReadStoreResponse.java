@@ -1,6 +1,7 @@
 package com.mayo.client.mayoclientapi.presentation.dto.response;
 
 import com.mayo.client.mayoclientapi.persistence.domain.Store;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 @Builder
@@ -17,7 +18,9 @@ public record ReadStoreResponse(
         String storeDescription,
         String storeNumber,
         String storeMapUrl,
+        @Schema(nullable = true)
         String originInfo,
+        @Schema(nullable = true)
         String additionalComment,
         Long storeCategory,
         Long storeSellingType,

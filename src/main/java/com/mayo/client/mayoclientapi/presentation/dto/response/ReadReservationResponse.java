@@ -5,6 +5,8 @@ import com.mayo.client.mayoclientapi.persistence.domain.Reservation;
 import com.mayo.client.mayoclientapi.persistence.domain.Store;
 import lombok.Builder;
 
+import java.time.LocalDateTime;
+
 @Builder
 public record ReadReservationResponse(
         String reservationId,
@@ -12,7 +14,7 @@ public record ReadReservationResponse(
         String storeImage,
         ReadFirstItemResponse firstItem,
         Double totalPrice,
-        Timestamp createdAt
+        LocalDateTime createdAt
 ) {
     public static ReadReservationResponse from(Reservation reservation, Store store, ReadFirstItemResponse firstItem) {
         return ReadReservationResponse.builder()
@@ -21,7 +23,7 @@ public record ReadReservationResponse(
                 .storeImage(store.getStoreImage())
                 .firstItem(firstItem)
                 .totalPrice(reservation.getTotalPrice())
-                .createdAt(reservation.getCreatedAt())
+                .createdAt(reservation.getCreatedAt().toSqlTimestamp().toLocalDateTime())
                 .build();
     }
 }
