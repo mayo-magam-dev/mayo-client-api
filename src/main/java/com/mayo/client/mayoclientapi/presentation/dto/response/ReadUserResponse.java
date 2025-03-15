@@ -13,7 +13,6 @@ public record ReadUserResponse(
         String displayName,
         @Schema(nullable = true)
         String photoUrl,
-        Timestamp createdTime,
         @Schema(nullable = true)
         String phoneNumber,
         @Schema(nullable = true)
@@ -30,7 +29,6 @@ public record ReadUserResponse(
                 .email(user.getEmail())
                 .displayName(user.getDisplayName())
                 .photoUrl(user.getPhotoUrl())
-                .createdTime(user.getCreatedTime())
                 .phoneNumber(user.getPhoneNumber())
                 .agreeMarketing(user.getAgreeMarketing())
                 .gender(user.getGender())

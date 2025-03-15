@@ -83,6 +83,12 @@ public class UserRepository {
                 .update("agree_marketing", agreeMarketing, SetOptions.merge());
     }
 
+    public void updateUserImage(String uid, String userImage) {
+        firestore.collection(COLLECTION_NAME_USERS)
+                .document(uid)
+                .update("photo_url", userImage, SetOptions.merge());
+    }
+
     public Optional<DocumentReference> findDocByUserId(String uid) {
 
         ApiFuture<DocumentSnapshot> future = firestore.collection(COLLECTION_NAME_USERS).document(uid).get();

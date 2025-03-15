@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -140,6 +141,19 @@ public class UserController {
     @PutMapping("/email")
     public ResponseEntity<Void> updateEmail(@RequestAttribute("uid") String uid, @RequestBody UpdateEmailRequest request) {
         userService.updateEmail(uid, request.email());
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "마케팅 수신동의 업데이트", description = "마케팅 수신동의를 업데이트합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "마케팅 수신동의을 업데이트합니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
+    @Authenticated
+    @PutMapping("/userImage")
+    public ResponseEntity<Void> updateUserImage(@RequestAttribute("uid") String uid, @RequestParam MultipartFile file) {
+        userService.updateUserImage(uid, file);
         return ResponseEntity.noContent().build();
     }
 

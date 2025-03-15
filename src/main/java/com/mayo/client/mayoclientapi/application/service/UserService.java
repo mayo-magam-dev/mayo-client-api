@@ -17,10 +17,12 @@ import com.mayo.client.mayoclientapi.presentation.dto.response.ReadUserResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +32,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
+    private final StorageService storageService;
 
     public void createUser(CreateUserRequest request, String uid) {
         userRepository.save(request.toEntity(uid));
@@ -158,6 +161,22 @@ public class UserService {
                 ));
 
         userRepository.updateAgreeMarketing(userId, agreeMarketing);
+    }
+
+    public void updateUserImage(String userId, MultipartFile file) {
+
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new ApplicationException(
+                        ErrorStatus.toErrorStatus("해당하는 유저가 없습니다.", 404, LocalDateTime.now())
+                ));
+
+        if(user.getPhotoUrl() != null) {
+            storageService.deleteFirebaseBucket(user.getPhotoUrl());
+        }
+
+        String imageUrl = storageService.uploadFirebaseBucket(file, user.getName() + "profile" + UUID.randomUUID());
+
+        userRepository.updateUserImage(userId, imageUrl);
     }
 
     public void createFCMToken(String userId, String fcmToken, DeviceType deviceType) {
