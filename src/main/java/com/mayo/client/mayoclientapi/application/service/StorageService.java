@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -32,7 +31,7 @@ public class StorageService {
                 .build();
 
         try {
-            bucket.create(fileName, multipartFile.getInputStream(), multipartFile.getContentType());
+            bucket.create("users/" + fileName, multipartFile.getInputStream(), multipartFile.getContentType());
         } catch (IOException e) {
             throw new ApplicationException(
                     ErrorStatus.toErrorStatus("firebase storage 이미지 업로드 중 알 수 없는 에러가 발생하였습니다.", 500, LocalDateTime.now()
