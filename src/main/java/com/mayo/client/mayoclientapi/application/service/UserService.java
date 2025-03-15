@@ -170,7 +170,7 @@ public class UserService {
                         ErrorStatus.toErrorStatus("해당하는 유저가 없습니다.", 404, LocalDateTime.now())
                 ));
 
-        if(user.getPhotoUrl() != null) {
+        if(user.getPhotoUrl() != null && storageService.isFirebaseStorageUrl(user.getPhotoUrl())) {
             storageService.deleteFirebaseBucket(user.getPhotoUrl());
         }
 
