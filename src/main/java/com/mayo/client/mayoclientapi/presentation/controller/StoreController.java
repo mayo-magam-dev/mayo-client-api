@@ -83,6 +83,17 @@ public class StoreController {
         return ResponseEntity.ok(storeService.getDessertStore());
     }
 
+    @Operation(summary = "제휴업체 조회", description = "제휴업체를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "제휴업체 가게 조회 성공", content = @Content(schema = @Schema(implementation = List.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
+    @GetMapping("/partner")
+    public ResponseEntity<List<ReadSimpleStoreResponse>> getPartnerStore() {
+        return ResponseEntity.ok(storeService.getPartnerStore());
+    }
+
     @Operation(summary = "최근 주문한 가게 조회", description = "최근 주문한 가게를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "최근 주문 가게 조회 성공", content = @Content(schema = @Schema(implementation = ReadRecentlyStoreResponse.class))),

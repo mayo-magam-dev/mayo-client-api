@@ -122,16 +122,39 @@ public class StoreRepository {
 
         List<Store> list = new ArrayList<>();
         ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION_NAME)
-                .whereEqualTo("is_active", true).get();
+                .whereEqualTo("is_active", true)
+                .whereEqualTo("store_category", category)
+                .get();
 
         try {
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 
             for(QueryDocumentSnapshot document : documents) {
-                Store store = fromDocument(document);
-                if(Objects.equals(store.getStoreCategory(), category)) {
-                    list.add(store);
-                }
+                list.add(fromDocument(document));
+            }
+
+            list.sort(Comparator.comparing(Store::getStoreName));
+
+        } catch (ExecutionException | InterruptedException e) {
+            throw new ApplicationException(ErrorStatus.toErrorStatus("알 수 없는 문제가 발생하였습니다.", 500 ,LocalDateTime.now()));
+        }
+
+        return list;
+    }
+
+    public List<Store> findPartnerStore() {
+
+        List<Store> list = new ArrayList<>();
+        ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION_NAME)
+                .whereEqualTo("is_active", true)
+                .whereEqualTo("is_partner", true)
+                .get();
+
+        try {
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+
+            for(QueryDocumentSnapshot document : documents) {
+                list.add(fromDocument(document));
             }
 
             list.sort(Comparator.comparing(Store::getStoreName));

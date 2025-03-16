@@ -133,4 +133,18 @@ public class StoreService {
 
         return list;
     }
+
+    public List<ReadSimpleStoreResponse> getPartnerStore() {
+
+        List<ReadSimpleStoreResponse> list = new ArrayList<>();
+
+        List<Store> stores = storeRepository.findPartnerStore();
+
+        for(Store store : stores) {
+            Double maxSalePercent = itemRepository.findMaxPercentItemByStoreId(store.getId());
+            list.add(ReadSimpleStoreResponse.from(store, maxSalePercent));
+        }
+
+        return list;
+    }
 }
