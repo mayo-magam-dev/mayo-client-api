@@ -36,7 +36,9 @@ jobs:
           ssh -i ~/.ssh/github_rsa -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} "
             cd ${REMOTE_DIR} &&
             docker stop mayo-client || true && docker rm mayo-client || true &&
-            docker run --network host -d --name mayo-client -p ${APP_PORT}:${APP_PORT} mayo-client
+            docker run --network host -d --name mayo-client -p ${APP_PORT}:${APP_PORT} \
+            --memory-swap=2g --memory=1m \
+            mayo-client
             sleep 10
             docker image prune -a -f
           "
