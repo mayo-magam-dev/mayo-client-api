@@ -4,6 +4,8 @@ import com.mayo.client.mayoclientapi.common.annotation.FirestoreTransactional;
 import com.mayo.client.mayoclientapi.common.exception.ApplicationException;
 import com.mayo.client.mayoclientapi.common.exception.payload.ErrorStatus;
 import com.mayo.client.mayoclientapi.persistence.domain.Store;
+import com.mayo.client.mayoclientapi.persistence.domain.type.DessertCategory;
+import com.mayo.client.mayoclientapi.persistence.domain.type.MealCategory;
 import com.mayo.client.mayoclientapi.persistence.repository.ItemRepository;
 import com.mayo.client.mayoclientapi.persistence.repository.ReservationRepository;
 import com.mayo.client.mayoclientapi.persistence.repository.StoreRepository;
@@ -95,6 +97,38 @@ public class StoreService {
         for(Store store : stores) {
             Double maxSalePercent = itemRepository.findMaxPercentItemByStoreId(store.getId());
             list.add(ReadSimpleStoreResponse.from(store, maxSalePercent));
+        }
+
+        return list;
+    }
+
+    public List<ReadSimpleStoreResponse> getMealStore() {
+
+        List<ReadSimpleStoreResponse> list = new ArrayList<>();
+
+        for(MealCategory category :MealCategory.values()) {
+            List<Store> stores = storeRepository.findByCategory(category.getCode());
+
+            for(Store store : stores) {
+                Double maxSalePercent = itemRepository.findMaxPercentItemByStoreId(store.getId());
+                list.add(ReadSimpleStoreResponse.from(store, maxSalePercent));
+            }
+        }
+
+        return list;
+    }
+
+    public List<ReadSimpleStoreResponse> getDessertStore() {
+
+        List<ReadSimpleStoreResponse> list = new ArrayList<>();
+
+        for(DessertCategory category : DessertCategory.values()) {
+            List<Store> stores = storeRepository.findByCategory(category.getCode());
+
+            for(Store store : stores) {
+                Double maxSalePercent = itemRepository.findMaxPercentItemByStoreId(store.getId());
+                list.add(ReadSimpleStoreResponse.from(store, maxSalePercent));
+            }
         }
 
         return list;

@@ -61,6 +61,28 @@ public class StoreController {
         return ResponseEntity.ok(storeService.getStoreByCategory(storeCategory));
     }
 
+    @Operation(summary = "식사류 가게 조회", description = "식사류 가게를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "식사류 가게 조회 성공", content = @Content(schema = @Schema(implementation = List.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
+    @GetMapping("/meal")
+    public ResponseEntity<List<ReadSimpleStoreResponse>> getMeals() {
+        return ResponseEntity.ok(storeService.getMealStore());
+    }
+
+    @Operation(summary = "디저트류 가게 조회", description = "디저트류 가게를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "식사류 가게 조회 성공", content = @Content(schema = @Schema(implementation = List.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
+    @GetMapping("/dessert")
+    public ResponseEntity<List<ReadSimpleStoreResponse>> getDesserts() {
+        return ResponseEntity.ok(storeService.getDessertStore());
+    }
+
     @Operation(summary = "최근 주문한 가게 조회", description = "최근 주문한 가게를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "최근 주문 가게 조회 성공", content = @Content(schema = @Schema(implementation = ReadRecentlyStoreResponse.class))),
