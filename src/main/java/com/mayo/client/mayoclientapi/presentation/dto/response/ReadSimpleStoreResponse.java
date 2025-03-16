@@ -1,6 +1,7 @@
 package com.mayo.client.mayoclientapi.presentation.dto.response;
 
 import com.mayo.client.mayoclientapi.persistence.domain.Store;
+import com.mayo.client.mayoclientapi.persistence.domain.type.StoreSellingType;
 import lombok.Builder;
 
 @Builder
