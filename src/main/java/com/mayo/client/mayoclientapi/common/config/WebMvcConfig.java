@@ -13,6 +13,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     private final AuthenticationInterceptor authenticationInterceptor;
     private final LogInterceptor logInterceptor;
+    private final FirebaseInitializer.FirestoreConnectionInterceptor firestoreConnectionInterceptor;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -39,6 +40,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**");
 
         registry.addInterceptor(logInterceptor)
+                .addPathPatterns("/**");
+
+        registry.addInterceptor(firestoreConnectionInterceptor)
                 .addPathPatterns("/**");
     }
 
