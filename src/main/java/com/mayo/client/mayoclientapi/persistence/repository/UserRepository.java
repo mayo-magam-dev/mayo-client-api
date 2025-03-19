@@ -110,11 +110,15 @@ public class UserRepository {
 
         try {
             document = future.get();
+
+            if(document.exists()) {
+                return Optional.of(fromDocument(document));
+            }
         } catch (InterruptedException | ExecutionException e) {
             throw new ApplicationException(ErrorStatus.toErrorStatus("해당 유저를 찾는데 오류가 발생하였습니다", 400, LocalDateTime.now()));
         }
 
-        return Optional.ofNullable(fromDocument(document));
+        return Optional.empty();
     }
 
     public List<String> getFCMTokenByUserId(String userId) {

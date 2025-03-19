@@ -42,6 +42,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getUser(uid));
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<ReadUserResponse> testUser() {
+        return ResponseEntity.ok(userService.getUser("AtJFOO6VHjb8Jn6YJ0bX60QTgko1"));
+    }
+
     @Operation(summary = "좋아요 표시한 가게 조회", description = "좋아요 표시한 가게를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "좋아요 표시한 가게 조회", content = @Content(schema = @Schema(implementation = List.class))),
