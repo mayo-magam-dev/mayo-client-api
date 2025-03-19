@@ -37,7 +37,7 @@ jobs:
             cd ${REMOTE_DIR} &&
             docker stop mayo-client || true && docker rm mayo-client || true &&
             docker run --network host -d --name mayo-client -p ${APP_PORT}:${APP_PORT} \
-            --memory-swap=8g --memory=4g \
+            --memory-swap=2g --memory=4g \
             mayo-client
             sleep 10
             docker image prune -a -f
