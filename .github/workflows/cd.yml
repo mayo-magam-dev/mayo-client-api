@@ -27,7 +27,6 @@ jobs:
           REMOTE_USER: ${{ secrets.SSH_USER }}
           REMOTE_HOST: ${{ secrets.SSH_HOST }}
           REMOTE_DIR: ${{ secrets.REMOTE_DIR }}
-          APP_PORT: 8080
         run: |
           mkdir -p ~/.ssh
           echo "${SSH_PRIVATE_KEY}" > ~/.ssh/github_rsa
@@ -36,7 +35,7 @@ jobs:
           ssh -i ~/.ssh/github_rsa -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} "
             cd ${REMOTE_DIR} &&
             docker stop mayo-client || true && docker rm mayo-client || true &&
-            docker run --network host -d --name mayo-client -p ${APP_PORT}:${APP_PORT} \
+            docker run -d --name mayo-client -p 8080:8080 \
             --memory-swap=2g --memory=1g \
             mayo-client
             sleep 10
