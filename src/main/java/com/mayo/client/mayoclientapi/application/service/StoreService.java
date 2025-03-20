@@ -14,6 +14,7 @@ import com.mayo.client.mayoclientapi.presentation.dto.response.ReadSimpleStoreRe
 import com.mayo.client.mayoclientapi.presentation.dto.response.ReadStoreResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,6 +31,7 @@ public class StoreService {
     private final ItemRepository itemRepository;
     private final ReservationRepository reservationRepository;
 
+    @Cacheable(value = "allStores")
     public List<ReadSimpleStoreResponse> getAllStores() {
 
         List<ReadSimpleStoreResponse> list = new ArrayList<>();
@@ -43,6 +45,7 @@ public class StoreService {
         return list;
     }
 
+    @Cacheable(value = "openStores")
     public List<ReadSimpleStoreResponse> getOpenStores() {
 
         List<ReadSimpleStoreResponse> list = new ArrayList<>();
@@ -80,6 +83,7 @@ public class StoreService {
                 .orElse(null);
     }
 
+    @Cacheable(value = "storeDetails", key = "#storeId")
     public ReadStoreResponse getStore(String storeId) {
 
         Store store = storeRepository.findByStoreId(storeId)
@@ -102,6 +106,7 @@ public class StoreService {
         return list;
     }
 
+    @Cacheable(value = "mealStore")
     public List<ReadSimpleStoreResponse> getMealStore() {
 
         List<ReadSimpleStoreResponse> list = new ArrayList<>();
@@ -118,6 +123,7 @@ public class StoreService {
         return list;
     }
 
+    @Cacheable(value = "dessertStore")
     public List<ReadSimpleStoreResponse> getDessertStore() {
 
         List<ReadSimpleStoreResponse> list = new ArrayList<>();
@@ -134,6 +140,7 @@ public class StoreService {
         return list;
     }
 
+    @Cacheable(value = "partnerStore")
     public List<ReadSimpleStoreResponse> getPartnerStore() {
 
         List<ReadSimpleStoreResponse> list = new ArrayList<>();
