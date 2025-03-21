@@ -62,14 +62,16 @@ public class UserService {
                         ErrorStatus.toErrorStatus("해당하는 유저가 없습니다.", 404, LocalDateTime.now())
                 ));
 
-        for(DocumentReference docRef : user.getNoticeStores()) {
+        if(user.getNoticeStores() != null && !user.getNoticeStores().isEmpty()) {
+            for(DocumentReference docRef : user.getNoticeStores()) {
 
-            Store store = storeRepository.findByDocRef(docRef)
-                            .orElseThrow(() -> new ApplicationException(
-                                    ErrorStatus.toErrorStatus("해당하는 가게가 없습니다.", 404, LocalDateTime.now())
-                            ));
+                Store store = storeRepository.findByDocRef(docRef)
+                        .orElseThrow(() -> new ApplicationException(
+                                ErrorStatus.toErrorStatus("해당하는 가게가 없습니다.", 404, LocalDateTime.now())
+                        ));
 
-            responses.add(ReadStoreResponse.from(store));
+                responses.add(ReadStoreResponse.from(store));
+            }
         }
 
         return responses;
@@ -84,14 +86,16 @@ public class UserService {
                         ErrorStatus.toErrorStatus("해당하는 유저가 없습니다.", 404, LocalDateTime.now())
                 ));
 
-        for(DocumentReference docRef : user.getFavoriteStores()) {
+        if(user.getFavoriteStores() != null && !user.getFavoriteStores().isEmpty()) {
+            for(DocumentReference docRef : user.getFavoriteStores()) {
 
-            Store store = storeRepository.findByDocRef(docRef)
-                    .orElseThrow(() -> new ApplicationException(
-                            ErrorStatus.toErrorStatus("해당하는 가게가 없습니다.", 404, LocalDateTime.now())
-                    ));
+                Store store = storeRepository.findByDocRef(docRef)
+                        .orElseThrow(() -> new ApplicationException(
+                                ErrorStatus.toErrorStatus("해당하는 가게가 없습니다.", 404, LocalDateTime.now())
+                        ));
 
-            responses.add(ReadStoreResponse.from(store));
+                responses.add(ReadStoreResponse.from(store));
+            }
         }
 
         return responses;
