@@ -93,6 +93,7 @@ public class StoreService {
         return ReadStoreResponse.from(store);
     }
 
+    @Cacheable(value = "randomOpenStore")
     public List<ReadSimpleStoreResponse> getRandomOpenStores() {
 
         List<ReadSimpleStoreResponse> list = new ArrayList<>();
