@@ -92,12 +92,6 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/notice-store/test")
-    public ResponseEntity<Void> updateNoticeStore(@RequestBody UpdateNoticeStoreRequest request) {
-        userService.updateNoticeStore(request, "1ttsC591higWm8sVaZ887acfaTV2");
-        return ResponseEntity.noContent().build();
-    }
-
     @Operation(summary = "좋아요 표시한 가게 업데이트", description = "좋아요 표시한 가게를 업데이트합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "좋아요 표시한 가게를 업데이트합니다."),
