@@ -111,7 +111,7 @@ public class UserService {
         DocumentReference target = storeRepository.findDocRefById(request.storeId())
                 .orElse(null);
 
-        List<DocumentReference> noticeStores = user.getNoticeStores();
+        List<DocumentReference> noticeStores = user.getNoticeStores() != null ? user.getNoticeStores() : new ArrayList<>();
 
         if(noticeStores.contains(target)) {
             userRepository.removeNoticeStore(user, target);
@@ -130,7 +130,7 @@ public class UserService {
         DocumentReference target = storeRepository.findDocRefById(request.storeId())
                 .orElse(null);
 
-        List<DocumentReference> favoriteStores = user.getFavoriteStores();
+        List<DocumentReference> favoriteStores = user.getFavoriteStores() != null ? user.getFavoriteStores() : new ArrayList<>();
 
         if(favoriteStores.contains(target)) {
             userRepository.removeFavoriteStore(user, target);
