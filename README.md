@@ -4,7 +4,6 @@
 
 > 개발 기간 : 2025.12.4 ~ 2024.12.11 <br/>
 > - 마감할인 플랫폼 mayo(마감해요)의 클라이언트용 api 서버입니다. <br/>
-> - URL : https://mayomagam.shop
 
 ## 개발 환경
 - 개발도구: Intellij IDEA - Ultimate
