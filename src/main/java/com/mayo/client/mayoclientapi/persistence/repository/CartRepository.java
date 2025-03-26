@@ -124,7 +124,6 @@ public class CartRepository {
         firestore.collection("carts").document(cartId).delete();
     }
 
-    @FirestoreTransactional
     public void updateCartIsActiveFalse(String cartId) {
 
         try {
@@ -137,7 +136,6 @@ public class CartRepository {
         }
     }
 
-    @FirestoreTransactional
     public void updateCartQuantity(UpdateCartQuantityRequest request) {
 
         DocumentReference cartDoc = null;

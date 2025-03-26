@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Slf4j
 @RequiredArgsConstructor
-@FirestoreTransactional
 public class PushNotificationRepository {
 
     private static final String COLLECTION_NAME = "push_notifications";

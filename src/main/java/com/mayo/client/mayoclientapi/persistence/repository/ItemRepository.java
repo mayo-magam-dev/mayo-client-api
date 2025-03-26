@@ -19,7 +19,6 @@ import java.util.concurrent.ExecutionException;
 @Repository
 @Slf4j
 @RequiredArgsConstructor
-@FirestoreTransactional
 public class ItemRepository {
 
     private static final String COLLECTION_NAME = "items";
