@@ -18,7 +18,6 @@ import java.util.concurrent.ExecutionException;
 
 @Repository
 @RequiredArgsConstructor
-@FirestoreTransactional
 public class BoardRepository {
 
     private final Firestore firestore;

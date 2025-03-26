@@ -19,7 +19,7 @@ public class FirestoreTransactionAspect {
 
     private final Firestore firestore;
 
-    @Around("@annotation(com.mayo.client.mayoclientapi.common.annotation.FirestoreTransactional) || @within(com.mayo.client.mayoclientapi.common.annotation.FirestoreTransactional)")
+    @Around("@within(com.mayo.client.mayoclientapi.common.annotation.FirestoreTransactional)")
     public Object around(ProceedingJoinPoint joinPoint) {
         try {
             return firestore.runTransaction(transaction -> {

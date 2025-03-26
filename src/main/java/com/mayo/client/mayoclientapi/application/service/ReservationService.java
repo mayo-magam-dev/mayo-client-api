@@ -19,7 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-@FirestoreTransactional
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
@@ -99,6 +98,7 @@ public class ReservationService {
         return ReadReservationDetailResponse.from(reservation, store, cartList);
     }
 
+    @FirestoreTransactional
     public void createReservation(CreateReservationRequest request, String uid) {
 
         DocumentReference userRef = userRepository.findDocByUserId(uid)

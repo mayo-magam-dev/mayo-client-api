@@ -21,12 +21,12 @@ import java.util.concurrent.ExecutionException;
 @Repository
 @Slf4j
 @RequiredArgsConstructor
-@FirestoreTransactional
 public class CartRepository {
 
     private final String COLLECTION_NAME_CARTS = "carts";
     private final Firestore firestore;
 
+    @FirestoreTransactional
     public Cart save(Cart cart) {
         ApiFuture<DocumentReference> future = firestore.collection(COLLECTION_NAME_CARTS).add(cart.toMap());
 
@@ -124,6 +124,7 @@ public class CartRepository {
         firestore.collection("carts").document(cartId).delete();
     }
 
+    @FirestoreTransactional
     public void updateCartIsActiveFalse(String cartId) {
 
         try {
@@ -136,6 +137,7 @@ public class CartRepository {
         }
     }
 
+    @FirestoreTransactional
     public void updateCartQuantity(UpdateCartQuantityRequest request) {
 
         DocumentReference cartDoc = null;

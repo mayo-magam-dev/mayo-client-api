@@ -175,6 +175,7 @@ public class UserRepository {
         return fcmTokens;
     }
 
+    @FirestoreTransactional
     public void createFCMTokenById(String userId, String token, DeviceType deviceType) {
 
         DocumentReference userRef = firestore.collection("users").document(userId);

@@ -17,7 +17,6 @@ import java.util.concurrent.ExecutionException;
 @Repository
 @Slf4j
 @RequiredArgsConstructor
-@FirestoreTransactional
 public class ReservationRepository {
 
     private static final String USER_COLLECTION_NAME = "users";
