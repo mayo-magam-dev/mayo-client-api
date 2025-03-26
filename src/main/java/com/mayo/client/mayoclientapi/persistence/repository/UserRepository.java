@@ -21,7 +21,6 @@ import java.util.concurrent.ExecutionException;
 @Repository
 @Slf4j
 @RequiredArgsConstructor
-@FirestoreTransactional
 public class UserRepository {
 
     private static final String COLLECTION_NAME_FCM_TOKENS = "fcm_tokens";
