@@ -25,7 +25,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@FirestoreTransactional
 public class FCMService {
 
     private static final String SERVER_NAME = "mayo-client-server";

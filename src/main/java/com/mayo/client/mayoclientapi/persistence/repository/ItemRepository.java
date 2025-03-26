@@ -114,24 +114,6 @@ public class ItemRepository {
 
     }
 
-    public void updateItemsStateOutOfStock(String storeId) {
-
-        CollectionReference itemRef = firestore.collection("items");
-        DocumentReference storesDocumentId = firestore.collection("stores").document(storeId);
-        QuerySnapshot querySnapshot = null;
-
-        try {
-            querySnapshot = itemRef.whereEqualTo("store_ref", storesDocumentId).get().get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new ApplicationException(ErrorStatus.toErrorStatus("해당 가게에 아이템이 없습니다.", 400, LocalDateTime.now()));
-        }
-
-        for (QueryDocumentSnapshot itemDocument : querySnapshot.getDocuments()) {
-            DocumentReference item = itemRef.document(itemDocument.getId());
-            item.update("item_on_sale", false, "item_quantity", 0);
-        }
-    }
-
     public void updateItemQuantityMinus(String itemId, Integer count) {
 
         try {
@@ -233,23 +215,5 @@ public class ItemRepository {
                 .additionalInformation(document.getString("additional_information"))
                 .storeRef((DocumentReference) document.get("store_ref"))
                 .build();
-    }
-
-    private List<Item> getRandomItems(List<Item> items, int n) {
-        Random random = new SecureRandom();
-        List<Item> randomItems = new ArrayList<>();
-        Set<Integer> indices = new HashSet<>();
-
-        int maxItems = Math.min(n, items.size());
-
-        while (indices.size() < maxItems) {
-            indices.add(random.nextInt(items.size()));
-        }
-
-        for (int index : indices) {
-            randomItems.add(items.get(index));
-        }
-
-        return randomItems;
     }
 }

@@ -28,7 +28,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@FirestoreTransactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -101,6 +100,7 @@ public class UserService {
         return responses;
     }
 
+    @FirestoreTransactional
     public void updateNoticeStore(UpdateNoticeStoreRequest request, String userId) {
 
         User user = userRepository.findByUserId(userId)
@@ -120,6 +120,7 @@ public class UserService {
         }
     }
 
+    @FirestoreTransactional
     public void updateFavoriteStore(UpdateFavoriteStoreRequest request, String userId) {
 
         User user = userRepository.findByUserId(userId)
@@ -139,6 +140,7 @@ public class UserService {
         }
     }
 
+    @FirestoreTransactional
     public void updateNickName(String userId, String nickName) {
 
         userRepository.findByUserId(userId)
@@ -149,6 +151,7 @@ public class UserService {
         userRepository.updateUserNickName(userId, nickName);
     }
 
+    @FirestoreTransactional
     public void updateEmail(String userId, String email) {
 
         userRepository.findByUserId(userId)
@@ -159,6 +162,7 @@ public class UserService {
         userRepository.updateUserEmail(userId, email);
     }
 
+    @FirestoreTransactional
     public void updateAgreeMarketing(String userId, Boolean agreeMarketing) {
 
         userRepository.findByUserId(userId)
@@ -169,6 +173,7 @@ public class UserService {
         userRepository.updateAgreeMarketing(userId, agreeMarketing);
     }
 
+    @FirestoreTransactional
     public void updateUserImage(String userId, MultipartFile file) {
 
         User user = userRepository.findByUserId(userId)
@@ -185,6 +190,7 @@ public class UserService {
         userRepository.updateUserImage(userId, imageUrl);
     }
 
+    @FirestoreTransactional
     public void createFCMToken(String userId, String fcmToken, DeviceType deviceType) {
         userRepository.createFCMTokenById(userId, fcmToken, deviceType);
     }

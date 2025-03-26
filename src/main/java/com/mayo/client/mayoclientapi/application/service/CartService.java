@@ -33,6 +33,7 @@ public class CartService {
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
 
+    @FirestoreTransactional
     public ReadCartResponse createCart(CreateCartRequest request, String userId) {
 
         List<ReadCartResponse> cartResponseList = getCartsByUserId(userId);
