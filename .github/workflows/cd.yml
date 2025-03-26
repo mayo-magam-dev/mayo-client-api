@@ -32,12 +32,33 @@ jobs:
           echo "${SSH_PRIVATE_KEY}" > ~/.ssh/github_rsa
           chmod 400 ~/.ssh/github_rsa
           ssh-keyscan ${REMOTE_HOST} >> ~/.ssh/known_hosts
+          
           ssh -i ~/.ssh/github_rsa -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} "
-            cd ${REMOTE_DIR} &&
-            docker stop mayo-client || true && docker rm mayo-client || true &&
-            docker run -d --name mayo-client -p 8080:8080 \
-            --memory-swap=2g --memory=1g \
-            mayo-client
-            sleep 10
+          
+            for port in 8080 8081 8082; do
+              CONTAINER_NAME=mayo-client-\$port
+
+              echo 'Stopping old container' \$CONTAINER_NAME
+              docker stop \$CONTAINER_NAME || true
+              docker rm \$CONTAINER_NAME || true
+
+              echo 'Starting new container' \$CONTAINER_NAME
+              docker run -d --name \$CONTAINER_NAME -p \$port:8080 mayo-client:latest
+
+              echo 'Waiting for container health check...'
+              for i in {1..10}; do
+                sleep 3
+                HEALTH_STATUS=\$(curl -s -o /dev/null -w '%{http_code}' http://localhost:\$port/actuator/health || echo 000)
+                if [ \"\$HEALTH_STATUS\" == \"200\" ]; then
+                  echo 'Container' \$CONTAINER_NAME 'is healthy!'
+                  break
+                fi
+                if [ \$i -eq 10 ]; then
+                  echo 'Health check failed for' \$CONTAINER_NAME
+                  exit 1
+                fi
+              done
+            done
+
             docker image prune -f
           "

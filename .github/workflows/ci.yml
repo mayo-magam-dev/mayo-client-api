@@ -68,5 +68,5 @@ jobs:
         run: |
           ssh -i ~/.ssh/github_rsa -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} "
             cd ${REMOTE_DIR} &&
-            docker build -t mayo-client .
+            docker build -t mayo-client:latest .
           "
