@@ -48,7 +48,7 @@ jobs:
               echo 'Waiting for container health check...'
               for i in {1..10}; do
                 sleep 3
-                HEALTH_STATUS=\$(curl -s -o /dev/null -w '%{http_code}' http://localhost:\$port/actuator/health || echo 000)
+                HEALTH_STATUS=\$(curl -s -o /dev/null -w '%{http_code}' http://localhost:\$port/store || echo 000)
                 if [ \"\$HEALTH_STATUS\" == \"200\" ]; then
                   echo 'Container' \$CONTAINER_NAME 'is healthy!'
                   break
