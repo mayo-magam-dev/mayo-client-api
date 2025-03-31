@@ -136,19 +136,24 @@ public class CartRepository {
         }
     }
 
+    @FirestoreTransactional
     public void updateCartQuantity(UpdateCartQuantityRequest request) {
 
-        DocumentReference cartDoc = null;
-
         try {
-            cartDoc = firestore.collection("carts").document(request.cartId()).get().get().getReference();
+            DocumentReference cartDoc = firestore.collection("carts").document(request.cartId()).get().get().getReference();
+            DocumentSnapshot documentSnapshot = cartDoc.get().get();
+
+            Cart cart = fromDocument(documentSnapshot);
+            double itemPrice = cart.getSubtotal() / cart.getItemCount();
+
+            cartDoc.update("itemCount", request.itemQuantity(),
+            "subtotal", request.itemQuantity() * itemPrice);
+
         } catch (InterruptedException | ExecutionException e) {
             throw new ApplicationException(
                     ErrorStatus.toErrorStatus("firebase 통신 중 오류가 발생하였습니다.", 500, LocalDateTime.now() )
             );
         }
-
-        cartDoc.update("itemCount", request.itemQuantity());
     }
 
     public Optional<DocumentReference> findFirstCartsByReservation(Reservation reservation) {
