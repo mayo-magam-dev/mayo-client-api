@@ -32,7 +32,16 @@ public class FirestoreTransactionAspect {
                 }
             }).get();
         } catch (ExecutionException | InterruptedException e) {
-            throw new ApplicationException(ErrorStatus.toErrorStatus("firebase transaction 오류", 500, LocalDateTime.now()));
+
+            Throwable cause = e.getCause();
+
+            if (cause instanceof ApplicationException applicationException) {
+                throw applicationException;
+            }
+
+            String errorMessage = "Firebase transaction 오류: " + (cause != null ? cause.getMessage() : e.getMessage());
+
+            throw new ApplicationException(ErrorStatus.toErrorStatus(errorMessage, 500, LocalDateTime.now()));
         }
     }
 }
