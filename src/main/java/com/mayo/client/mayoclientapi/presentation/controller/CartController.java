@@ -74,7 +74,7 @@ public class CartController {
             @ApiResponse(responseCode = "400", description = "잘못된 요청"),
             @ApiResponse(responseCode = "500", description = "서버 오류")
     })
-//    @Authenticated
+    @Authenticated
     @PutMapping
     public ResponseEntity<Void> updateCartQuantity(@RequestBody UpdateCartQuantityRequest request, BindingResult bindingResult) {
 
