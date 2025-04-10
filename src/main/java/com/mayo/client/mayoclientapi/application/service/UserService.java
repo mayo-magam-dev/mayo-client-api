@@ -42,7 +42,6 @@ public class UserService {
         userRepository.deleteUser(uid);
     }
 
-    @Cacheable(value = "user", key = "#userId")
     public ReadUserResponse getUser(String userId) {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new ApplicationException(
