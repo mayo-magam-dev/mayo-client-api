@@ -144,7 +144,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "마케팅 수신동의 업데이트", description = "마케팅 수신동의를 업데이트합니다.")
+    @Operation(summary = "유저 이미지 업데이트", description = "마케팅 수신동의를 업데이트합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "마케팅 수신동의을 업데이트합니다."),
             @ApiResponse(responseCode = "400", description = "잘못된 요청"),
