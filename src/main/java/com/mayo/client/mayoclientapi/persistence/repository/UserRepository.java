@@ -79,13 +79,13 @@ public class UserRepository {
     public void updateAgreeMarketing(String uid, Boolean agreeMarketing) {
         firestore.collection(COLLECTION_NAME_USERS)
                 .document(uid)
-                .update("agree_marketing", agreeMarketing, SetOptions.merge());
+                .set(Collections.singletonMap("agree_marketing", agreeMarketing), SetOptions.merge());
     }
 
     public void updateUserImage(String uid, String userImage) {
         firestore.collection(COLLECTION_NAME_USERS)
                 .document(uid)
-                .update("photo_url", userImage, SetOptions.merge());
+                .set(Collections.singletonMap("photo_url", userImage), SetOptions.merge());
     }
 
     public Optional<DocumentReference> findDocByUserId(String uid) {
