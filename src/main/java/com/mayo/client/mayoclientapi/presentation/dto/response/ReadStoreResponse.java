@@ -4,6 +4,8 @@ import com.mayo.client.mayoclientapi.persistence.domain.Store;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
+import java.io.Serializable;
+
 @Builder
 public record ReadStoreResponse(
         String id,
@@ -24,8 +26,10 @@ public record ReadStoreResponse(
         String additionalComment,
         Long storeCategory,
         Long storeSellingType,
-        String mainImage
-) {
+        String mainImage,
+        @Schema(nullable = true)
+        String accountNumber
+) implements Serializable {
     public static ReadStoreResponse from(Store store) {
         return ReadStoreResponse.builder()
                 .id(store.getId())
@@ -45,6 +49,7 @@ public record ReadStoreResponse(
                 .storeCategory(store.getStoreCategory())
                 .storeSellingType(store.getStoreSellingType())
                 .mainImage(store.getStoreMainImage())
+                .accountNumber(store.getAccountNumber())
                 .build();
     }
 }

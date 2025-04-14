@@ -4,6 +4,8 @@ import com.mayo.client.mayoclientapi.persistence.domain.Store;
 import com.mayo.client.mayoclientapi.persistence.domain.type.StoreSellingType;
 import lombok.Builder;
 
+import java.io.Serializable;
+
 @Builder
 public record ReadSimpleStoreResponse(
         String id,
@@ -13,7 +15,7 @@ public record ReadSimpleStoreResponse(
         String address,
         Double maxSalePercent,
         String storeImage
-) {
+) implements Serializable {
     public static ReadSimpleStoreResponse from(Store store, Double maxSalePercent) {
         return ReadSimpleStoreResponse.builder()
                 .id(store.getId())
