@@ -1,6 +1,5 @@
 package com.mayo.client.mayoclientapi.presentation.controller;
 
-import com.mayo.client.mayoclientapi.application.service.FCMService;
 import com.mayo.client.mayoclientapi.application.service.UserService;
 import com.mayo.client.mayoclientapi.common.annotation.Authenticated;
 import com.mayo.client.mayoclientapi.presentation.dto.request.*;
@@ -12,7 +11,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

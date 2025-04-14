@@ -215,6 +215,7 @@ public class StoreRepository {
                 .storeSellingType(document.getLong("store_sellingType"))
                 .storeCategory((document.getLong("store_category")))
                 .storeMainImage(document.getString("store_mainImage"))
+                .accountNumber(document.getString("account_number"))
                 .build();
     }
 }

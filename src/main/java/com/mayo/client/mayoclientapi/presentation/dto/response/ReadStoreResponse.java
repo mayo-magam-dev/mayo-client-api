@@ -26,7 +26,9 @@ public record ReadStoreResponse(
         String additionalComment,
         Long storeCategory,
         Long storeSellingType,
-        String mainImage
+        String mainImage,
+        @Schema(nullable = true)
+        String accountNumber
 ) implements Serializable {
     public static ReadStoreResponse from(Store store) {
         return ReadStoreResponse.builder()
@@ -47,6 +49,7 @@ public record ReadStoreResponse(
                 .storeCategory(store.getStoreCategory())
                 .storeSellingType(store.getStoreSellingType())
                 .mainImage(store.getStoreMainImage())
+                .accountNumber(store.getAccountNumber())
                 .build();
     }
 }
