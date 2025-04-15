@@ -16,7 +16,8 @@ public record ReadReservationDetailResponse(
         LocalDateTime pickupTime,
         String reservationId,
         List<ReadCartResponse> cartList,
-        Double totalPrice
+        Double totalPrice,
+        Integer reservationState
 ) {
     public static ReadReservationDetailResponse from(Reservation reservation, Store store, List<ReadCartResponse> cartList) {
         return ReadReservationDetailResponse.builder()
@@ -27,6 +28,7 @@ public record ReadReservationDetailResponse(
                 .pickupTime(reservation.getPickupTime().toSqlTimestamp().toLocalDateTime())
                 .cartList(cartList)
                 .totalPrice(reservation.getTotalPrice())
+                .reservationState(reservation.getReservationState())
                 .build();
     }
 }

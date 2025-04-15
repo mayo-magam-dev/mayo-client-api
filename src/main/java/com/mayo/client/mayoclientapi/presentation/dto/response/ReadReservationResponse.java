@@ -14,7 +14,8 @@ public record ReadReservationResponse(
         String storeImage,
         ReadFirstItemResponse firstItem,
         Double totalPrice,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        Integer reservationState
 ) {
     public static ReadReservationResponse from(Reservation reservation, Store store, ReadFirstItemResponse firstItem) {
         return ReadReservationResponse.builder()
@@ -24,6 +25,7 @@ public record ReadReservationResponse(
                 .firstItem(firstItem)
                 .totalPrice(reservation.getTotalPrice())
                 .createdAt(reservation.getCreatedAt().toSqlTimestamp().toLocalDateTime())
+                .reservationState(reservation.getReservationState())
                 .build();
     }
 }
