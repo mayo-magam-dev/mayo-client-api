@@ -197,6 +197,11 @@ public class StoreRepository {
     }
 
     private Store fromDocument(DocumentSnapshot document) {
+        List<Integer> openDayOfWeek = Optional.ofNullable((List<?>) document.get("open_day_of_week"))
+            .orElse(List.of()).stream()
+            .map(v -> ((Number) v).intValue())
+            .toList();
+
         return Store.builder()
                 .id(document.getId())
                 .storeName(document.getString("store_name"))
@@ -216,6 +221,7 @@ public class StoreRepository {
                 .storeCategory((document.getLong("store_category")))
                 .storeMainImage(document.getString("store_mainImage"))
                 .accountNumber(document.getString("account_number"))
+                .openDayOfWeek(openDayOfWeek)
                 .build();
     }
 }
