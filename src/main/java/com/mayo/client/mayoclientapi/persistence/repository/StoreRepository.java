@@ -214,7 +214,7 @@ public class StoreRepository {
                 .saleEnd(document.getString("sale_end"))
                 .storeDescription(document.getString("store_description"))
                 .storeNumber(document.getString("store_number"))
-                .storeMapUrl(document.getString("store_map_url"))
+                .storeMapUrl(document.getString("store_mapUrl"))
                 .originInfo(document.getString("origin_info"))
                 .additionalComment(document.getString("additional_comment"))
                 .storeSellingType(document.getLong("store_sellingType"))
